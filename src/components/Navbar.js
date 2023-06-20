@@ -46,8 +46,8 @@ const Navbar = () => {
         <Button
           onClick={ButtonClick}
           rightIcon={<WalletIcon />}
-          colorScheme="red"
-          variant="outline"
+          colorScheme="green"
+          variant="solid"
         >
           {isAndroid === false ? (
             account === null ? (
