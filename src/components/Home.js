@@ -10,8 +10,9 @@ const Home = () => {
         <h1>Welcome to Supply Chain DAPP</h1>
         <p>
           This is a Decentralized Application that stores the history of goods
-          from the producers to manufacturer, with all the information about the
-          price history,locations and time stamps.
+          from the producer to the manufacturer, with all the information about
+          the price history,locations and time stamps. The application makes the
+          process of buying and selling very transparent.
         </p>
         <p className="enter">Enter the product Id to check its information</p>
         <div className="search">
