@@ -10,6 +10,8 @@ const Home = () => {
   async function fetch() {
     const tx = await contract.assignProduct("Wheat", 1000);
     await tx.wait();
+    console.log(account);
+    console.log(contract);
     const tx2 = await contract.sellProduct(
       1000,
       "0xa777122Ad242e2800781e8692a0591b964396aF4",
