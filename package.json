@@ -1,5 +1,5 @@
 {
-  "name": "scm",
+  "name": "supply_chain",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,12 +10,19 @@
     "@mui/material": "^5.13.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.4.3",
-    "framer-motion": "^6.5.1",
+    "@testing-library/user-event": "^13.5.0",
+    "assert": "^2.0.0",
+    "console-browserify": "^1.2.0",
+    "ethers": "^5.6.9",
+    "framer-motion": "^10.12.16",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^3.11.0",
     "react-scripts": "5.0.1",
+    "url": "^0.11.1",
+    "util": "^0.12.5",
+    "vm-browserify": "^1.1.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -25,7 +32,10 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [

@@ -1,16 +1,14 @@
 .Nav-body {
   min-height: 12vh;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* color: white; */
+  color: white;
   padding: 0.5rem;
   border-bottom: 1px solid grey;
   gap: 2rem;
   background-color: #010409;
-
-  /* background-color: #1a202c; */
 }
 .logo {
   margin-left: 1rem;
@@ -21,6 +19,5 @@
 }
 .connect {
   margin-right: 1rem;
-  z-index: 100;
   /* margin-top: 0.5rem; */
 }

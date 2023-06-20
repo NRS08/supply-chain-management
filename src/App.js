@@ -1,7 +1,7 @@
-import './App.css';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import { ChakraProvider } from '@chakra-ui/react';
+import "./App.css";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   return (
