@@ -10,7 +10,7 @@ const Navbar = () => {
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
   const isAndroid = /android/i.test(navigator.userAgent);
-  console.log(isAndroid);
+  // console.log(isAndroid);
   async function ButtonClick() {
     console.log("window.ethereum:", window.ethereum);
     if (typeof window.ethereum !== "undefined") {
@@ -37,7 +37,7 @@ const Navbar = () => {
       };
       provider && loadProvider();
     } else {
-      alert("Install Metamask");
+      if (!isAndroid) alert("Install Metamask");
     }
   }
   return (
