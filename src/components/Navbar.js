@@ -9,6 +9,7 @@ import { useGlobalContext } from "../context";
 const Navbar = () => {
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
+  const isAndroid = /android/i.test(navigator.userAgent);
   async function ButtonClick() {
     console.log("window.ethereum:", window.ethereum);
     if (typeof window.ethereum !== "undefined") {
@@ -45,10 +46,20 @@ const Navbar = () => {
         <Button
           onClick={ButtonClick}
           rightIcon={<WalletIcon />}
-          colorScheme="green"
-          variant="solid"
+          colorScheme="red"
+          variant="outline"
         >
-          {account === null ? "Connect" : account}
+          {isAndroid === false ? (
+            account === null ? (
+              "Connect"
+            ) : (
+              account
+            )
+          ) : (
+            <a href="https://metamask.app.link/dapp/supply-chain-management-hwgf58pvq-nrs08.vercel.app/">
+              Connect
+            </a>
+          )}
         </Button>
       </div>
     </div>

@@ -1,4 +1,5 @@
 .Nav-body {
+  /* text-align: left; */
   min-height: 12vh;
   font-family: "Poppins", sans-serif;
   display: flex;
@@ -7,7 +8,7 @@
   color: white;
   padding: 0.5rem;
   border-bottom: 1px solid grey;
-  gap: 2rem;
+  /* gap: 2rem; */
   background-color: #010409;
 }
 .logo {
@@ -16,8 +17,23 @@
   font-weight: 600;
   letter-spacing: 1px;
   color: #e5c453;
+  width: 60%;
 }
 .connect {
   margin-right: 1rem;
+  /* max-width: 20%; */
+  max-width: 40%;
   /* margin-top: 0.5rem; */
+}
+.btn {
+  /* text-align: left; */
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.btn p {
+  text-align: left;
+  /* margin-left: 0.5rem; */
 }
