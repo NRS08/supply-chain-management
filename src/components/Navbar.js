@@ -45,8 +45,8 @@ const Navbar = () => {
         <Button
           onClick={ButtonClick}
           rightIcon={<WalletIcon />}
-          colorScheme="red"
-          variant="outline"
+          colorScheme="green"
+          variant="solid"
         >
           {account === null ? "Connect" : account}
         </Button>
