@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
 import { AppProvider } from "./context";
+import { BrowserRouter } from "react-router-dom";
 
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
@@ -12,8 +13,10 @@ const root = ReactDOM.createRoot(container);
 root.render(
   <StrictMode>
     <AppProvider>
-      {/* <ColorModeScript /> */}
-      <App />
+      <BrowserRouter>
+        {/* <ColorModeScript /> */}
+        <App />
+      </BrowserRouter>
     </AppProvider>
   </StrictMode>
 );

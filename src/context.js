@@ -4,6 +4,7 @@ const AppProvider = ({ children }) => {
   const [account, setAccount] = useState(null);
   const [contract, setContract] = useState(null);
   const [provider, setProvider] = useState(null);
+  const [name, setName] = React.useState("name");
   return (
     <AppContext.Provider
       value={{
@@ -13,6 +14,8 @@ const AppProvider = ({ children }) => {
         setContract,
         provider,
         setProvider,
+        name,
+        setName,
       }}
     >
       {children}

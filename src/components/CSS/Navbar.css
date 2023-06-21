@@ -19,21 +19,25 @@
   color: #e5c453;
   width: 60%;
 }
-.connect {
+.login {
   margin-right: 1rem;
   /* max-width: 20%; */
   max-width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   /* margin-top: 0.5rem; */
 }
-.btn {
-  /* text-align: left; */
-  max-width: 100%;
-  overflow: hidden;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+.signIn {
+  visibility: hidden;
 }
-.btn p {
-  text-align: left;
-  /* margin-left: 0.5rem; */
+
+@media only screen and (min-width: 600px) {
+  .login {
+    gap: 2rem;
+  }
+  .signIn {
+    visibility: visible;
+  }
 }

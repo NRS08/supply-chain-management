@@ -4,18 +4,11 @@ import "./CSS/Home.css";
 import { Button, Input } from "@chakra-ui/react";
 import SearchIcon from "@mui/icons-material/Search";
 import { useGlobalContext } from "../context";
-import Navbar from "./Navbar";
+import Navbar2 from "./Navbar2";
 import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const User = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    // if(token){
-    //   navigate("/user");
-    // }
-  }, []);
 
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
@@ -36,7 +29,7 @@ const Home = () => {
   }
   return (
     <>
-      <Navbar />
+      <Navbar2 />
       <div className="Home-body">
         <div className="content">
           <h1>Welcome to Supply Chain DAPP</h1>
@@ -58,4 +51,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default User;
