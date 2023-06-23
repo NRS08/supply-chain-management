@@ -207,6 +207,8 @@ const DesktopNav = () => {
       navigate("/");
     } else if (onclk == "listing") {
       navigate("/listItem");
+    } else if (onclk == "items") {
+      navigate("/items");
     }
   };
 
@@ -220,8 +222,8 @@ const DesktopNav = () => {
                 p={2}
                 // href={navItem.href ?? "#"}
                 onClick={() => handleClick(navItem.onclk)}
-                fontSize={"sm"}
-                fontWeight={500}
+                fontSize={"md"}
+                fontWeight={600}
                 color={linkColor}
                 _hover={{
                   textDecoration: "none",
@@ -281,7 +283,7 @@ const DesktopSubNav = ({ label, href, subLabel, onclk }: NavItem) => {
           <Text
             transition={"all .3s ease"}
             _groupHover={{ color: "pink.400" }}
-            fontWeight={500}
+            fontWeight={600}
             onClick={handleClick}
           >
             {label}
@@ -328,6 +330,8 @@ const MobileNavItem = ({ label, children, href, onclk }: NavItem) => {
       navigate("/");
     } else if (onclk == "listing") {
       navigate("/listItem");
+    } else if (onclk == "items") {
+      navigate("/items");
     }
   };
   return (
@@ -395,19 +399,9 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "#",
   },
   {
-    label: "Find Work",
-    children: [
-      {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "#",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "#",
-      },
-    ],
+    label: "Items For Sale",
+    onclk: "items",
+    href: "#",
   },
   {
     label: "Learn Design",
