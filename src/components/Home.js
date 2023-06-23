@@ -12,9 +12,9 @@ const Home = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    // if(token){
-    //   navigate("/user");
-    // }
+    if (token) {
+      navigate("/user");
+    }
   }, []);
 
   const { account, setAccount, contract, setContract, provider, setProvider } =

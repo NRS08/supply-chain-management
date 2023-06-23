@@ -32,7 +32,6 @@ export default function Login() {
   const [status, setStatus] = useState("error");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { name, setName } = useGlobalContext();
 
   const login = async () => {
     try {
@@ -46,7 +45,7 @@ export default function Login() {
       alert.style.display = "flex";
       // setPassword("");
       localStorage.setItem("token", data.token);
-      setName(data.user.name);
+      localStorage.setItem("scmName", data.user.name);
       setTimeout(() => {
         const alert = document.querySelector(".alert");
         alert.style.display = "none";

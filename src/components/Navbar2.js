@@ -32,17 +32,24 @@ import { ethers } from "ethers";
 import SCM from "../artifacts/contracts/SupplyChain.sol/SupplyChain.json";
 import { useGlobalContext } from "../context";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Navbar2() {
   const { isOpen, onToggle } = useDisclosure();
-  //   const [name, setName] = React.useState("name");
-  const { name } = useGlobalContext();
+  const { name, setName } = useGlobalContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const n = localStorage.getItem("scmName");
+    if (n) {
+      setName(n);
+    }
+  }, []);
 
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
   const isAndroid = /android/i.test(navigator.userAgent);
-  console.log(isAndroid);
+  // console.log(isAndroid);
   async function ButtonClick() {
     console.log("window.ethereum:", window.ethereum);
     if (typeof window.ethereum !== "undefined") {
@@ -75,6 +82,7 @@ export default function Navbar2() {
 
   const signOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("scmName");
     navigate("/");
   };
 
@@ -84,6 +92,7 @@ export default function Navbar2() {
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
+        height={"10vh"}
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
@@ -189,6 +198,17 @@ const DesktopNav = () => {
   const linkColor = useColorModeValue("gray.600", "gray.200");
   const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
+  const navigate = useNavigate();
+  // const onclk = NAV_ITEMS.onclk;
+  const handleClick = (onclk) => {
+    if (onclk == "signOut") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("scmName");
+      navigate("/");
+    } else if (onclk == "listing") {
+      navigate("/listItem");
+    }
+  };
 
   return (
     <Stack direction={"row"} spacing={4} align="center">
@@ -198,7 +218,8 @@ const DesktopNav = () => {
             <PopoverTrigger>
               <Link
                 p={2}
-                href={navItem.href ?? "#"}
+                // href={navItem.href ?? "#"}
+                onClick={() => handleClick(navItem.onclk)}
                 fontSize={"sm"}
                 fontWeight={500}
                 color={linkColor}
@@ -234,10 +255,21 @@ const DesktopNav = () => {
   );
 };
 
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
+const DesktopSubNav = ({ label, href, subLabel, onclk }: NavItem) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (onclk == "signOut") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("scmName");
+      navigate("/");
+    } else if (onclk == "listing") {
+      navigate("/listItem");
+    }
+  };
   return (
     <Link
-      href={href}
+      onClick={handleClick}
+      // href={href}
       role={"group"}
       display={"block"}
       p={2}
@@ -250,6 +282,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
             transition={"all .3s ease"}
             _groupHover={{ color: "pink.400" }}
             fontWeight={500}
+            onClick={handleClick}
           >
             {label}
           </Text>
@@ -285,15 +318,25 @@ const MobileNav = () => {
   );
 };
 
-const MobileNavItem = ({ label, children, href }: NavItem) => {
+const MobileNavItem = ({ label, children, href, onclk }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure();
-
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (onclk == "signOut") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("scmName");
+      navigate("/");
+    } else if (onclk == "listing") {
+      navigate("/listItem");
+    }
+  };
   return (
     <Stack spacing={4} onClick={children && onToggle}>
       <Flex
         py={2}
         as={Link}
-        href={href ?? "#"}
+        // href={href ?? "#"}
+        onClick={handleClick}
         justify={"space-between"}
         align={"center"}
         _hover={{
@@ -347,19 +390,9 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: "Inspiration",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "#",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "#",
-      },
-    ],
+    label: "List for Sale",
+    onclk: "listing",
+    href: "#",
   },
   {
     label: "Find Work",
@@ -381,7 +414,8 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "#",
   },
   {
-    label: "Hire Designers",
+    label: "Sign Out",
+    onclk: "signOut",
     href: "#",
   },
 ];

@@ -1,5 +1,5 @@
 .Home-body {
-  min-height: 88vh;
+  min-height: 90vh;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -12,7 +12,7 @@
   background-color: #0d1117;
 }
 .content {
-  margin-top: 5rem;
+  margin-top: 3rem;
   border: 3px solid grey;
   border-radius: 1rem;
   padding: 1rem;
@@ -40,6 +40,7 @@
 @media only screen and (min-width: 600px) {
   .content {
     width: 50%;
+    margin-top: 5rem;
   }
   .content h1 {
     font-size: xx-large;

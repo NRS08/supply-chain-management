@@ -10,6 +10,13 @@ import { useNavigate } from "react-router-dom";
 const User = () => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
+
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
   async function fetch() {
