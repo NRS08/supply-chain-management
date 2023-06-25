@@ -14,6 +14,7 @@ import {
   Link,
   Alert,
   AlertIcon,
+  useColorMode,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -30,8 +31,8 @@ export default function Register() {
   const [status, setStatus] = useState("error");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  // const { colorMode, toggleColorMode } = useColorMode();
-  // if (colorMode == "light") toggleColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
+  if (colorMode == "light") toggleColorMode();
   const navigate = useNavigate();
   const signIn = () => {
     navigate("/login");
