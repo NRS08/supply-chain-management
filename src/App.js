@@ -5,6 +5,8 @@ import Login from "./components/Login";
 import User from "./components/User";
 import ListItem from "./components/ListItem";
 import Items from "./components/Items";
+import BuyRequest from "./components/BuyRequest";
+import Requests from "./components/Requests";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
 
@@ -19,6 +21,8 @@ function App() {
           <Route path="/user" element={<User />} />
           <Route path="/listItem" element={<ListItem />} />
           <Route path="/items" element={<Items />} />
+          <Route path="/buyRequest" element={<BuyRequest />} />
+          <Route path="/requests" element={<Requests />} />
         </Routes>
       </div>
     </ChakraProvider>

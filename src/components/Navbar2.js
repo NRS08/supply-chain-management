@@ -32,17 +32,22 @@ import { ethers } from "ethers";
 import SCM from "../artifacts/contracts/SupplyChain.sol/SupplyChain.json";
 import { useGlobalContext } from "../context";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Navbar2() {
-  const { isOpen, onToggle } = useDisclosure();
+  const url = "https://tiny-jade-marlin-belt.cyclic.app/api/v1/listing/myId";
   const { name, setName } = useGlobalContext();
   const navigate = useNavigate();
+  const { isOpen, onToggle } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const n = localStorage.getItem("scmName");
     if (n) {
       setName(n);
+    } else {
+      navigate("/login");
     }
   }, []);
 
@@ -84,6 +89,23 @@ export default function Navbar2() {
     localStorage.removeItem("token");
     localStorage.removeItem("scmName");
     navigate("/");
+  };
+
+  const token = localStorage.getItem("token");
+  const getId = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setIsLoading(false);
+      alert(`Your Id: ${data.id}`);
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
   };
 
   return (
@@ -136,15 +158,6 @@ export default function Navbar2() {
           direction={"row"}
           spacing={6}
         >
-          {/* <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href={"#"}
-          >
-            Sign In
-          </Button> */}
           <Button
             onClick={ButtonClick}
             rightIcon={<WalletIcon />}
@@ -177,7 +190,9 @@ export default function Navbar2() {
                 {name}
               </MenuButton>
               <MenuList>
-                <MenuItem>Profile</MenuItem>
+                <MenuItem closeOnSelect={false} onClick={getId}>
+                  {isLoading ? "Loading..." : "Your Id"}
+                </MenuItem>
                 <MenuItem>Settings</MenuItem>
                 <MenuDivider />
                 <MenuItem onClick={signOut}>Sign Out</MenuItem>
@@ -209,6 +224,10 @@ const DesktopNav = () => {
       navigate("/listItem");
     } else if (onclk == "items") {
       navigate("/items");
+    } else if (onclk == "buyReq") {
+      navigate("/buyRequest");
+    } else if (onclk == "requests") {
+      navigate("/requests");
     }
   };
 
@@ -332,6 +351,10 @@ const MobileNavItem = ({ label, children, href, onclk }: NavItem) => {
       navigate("/listItem");
     } else if (onclk == "items") {
       navigate("/items");
+    } else if (onclk == "buyReq") {
+      navigate("/buyRequest");
+    } else if (onclk == "requests") {
+      navigate("/requests");
     }
   };
   return (
@@ -404,7 +427,13 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "#",
   },
   {
-    label: "Learn Design",
+    label: "Send Buy Request",
+    onclk: "buyReq",
+    href: "#",
+  },
+  {
+    label: "Buy Requests",
+    onclk: "requests",
     href: "#",
   },
   {

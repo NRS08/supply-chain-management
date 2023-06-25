@@ -36,8 +36,8 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-const ListItem = () => {
-  const url = "https://tiny-jade-marlin-belt.cyclic.app/api/v1/listing/item";
+const BuyRequest = () => {
+  const url = "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/request";
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("Message");
@@ -55,23 +55,20 @@ const ListItem = () => {
   const addItem = async () => {
     try {
       setIsLoading(true);
-      const name = localStorage.getItem("scmName");
-      const role = document.querySelector(".role").value;
       const Iname = document.querySelector(".Iname").value;
-      const harvestDate = document.querySelector(".harvest").value;
-      const amount = parseInt(document.querySelector(".amount").value);
-      const contact = document.querySelector(".contact").value;
-      //   console.log(name, role, Iname, harvest, amount, contact);
+      const amount = parseInt(document.querySelector(".quantity").value);
+      const price = parseInt(document.querySelector(".price").value);
+      const buyerName = localStorage.getItem("scmName");
+      const seller = document.querySelector(".seller").value;
 
       const { data } = await axios.post(
         url,
         {
-          name,
-          role,
           Iname,
-          harvestDate,
           amount,
-          contact,
+          price,
+          buyerName,
+          seller,
         },
         {
           headers: {
@@ -84,17 +81,16 @@ const ListItem = () => {
       const alert = document.querySelector(".alert");
       alert.style.display = "flex";
       setIsLoading(false);
-      //   document.querySelector(".name").value = "";
-      document.querySelector(".role").value = "";
+      document.querySelector(".quantity").value = "";
       document.querySelector(".Iname").value = "";
-      document.querySelector(".harvest").value = "";
-      document.querySelector(".amount").value = "";
-      document.querySelector(".contact").value = "";
+      document.querySelector(".price").value = "";
+      document.querySelector(".seller").value = "";
       setTimeout(() => {
         const alert = document.querySelector(".alert");
         alert.style.display = "none";
       }, 500);
     } catch (error) {
+      console.log(error);
       setStatus("error");
       setMessage(error.response.data.msg);
       setIsLoading(false);
@@ -119,19 +115,6 @@ const ListItem = () => {
         justifyContent={"center"}
         alignItems={"flex-start"}
       >
-        {/* <Alert
-          className="alert"
-          variant={"solid"}
-          status={status}
-          position={"absolute"}
-          w={"auto"}
-          top="20px"
-          display={"none"}
-          justifyContent="center"
-        >
-          <AlertIcon />
-          {message}
-        </Alert> */}
         <Box
           className="alert"
           w={"100vw"}
@@ -162,33 +145,9 @@ const ListItem = () => {
           height={"auto"}
         >
           <Text textAlign={"center"} fontSize={"2xl"} fontWeight="bold">
-            Add Item
+            Buy Request
           </Text>
           <Stack mt={2} direction={"column"} gap={1}>
-            {/* <Box display={"flex"} gap={2} alignItems="center">
-              <Text
-                w={{ base: "40%", md: "30%", lg: "20%" }}
-                fontSize={"lg"}
-                fontWeight={"600"}
-              >
-                Your Name
-              </Text>
-              <Input className="name" placeholder="Item Name" />
-            </Box> */}
-            <Box display={"flex"} gap={2} alignItems="center">
-              <Text
-                w={{ base: "40%", md: "30%", lg: "20%" }}
-                fontSize={"lg"}
-                fontWeight={"600"}
-              >
-                Role
-              </Text>
-              <Input
-                // type={"number"}
-                className="role"
-                placeholder="Eg. Farmer"
-              />
-            </Box>
             <Box display={"flex"} gap={2} alignItems="center">
               <Text
                 w={{ base: "40%", md: "30%", lg: "20%" }}
@@ -205,9 +164,9 @@ const ListItem = () => {
                 fontSize={"lg"}
                 fontWeight={"600"}
               >
-                Harvest Date
+                Quantity
               </Text>
-              <Input className="harvest" placeholder="Date" />
+              <Input type={"number"} className="quantity" placeholder="1000" />
             </Box>
             <Box display={"flex"} gap={2} alignItems="center">
               <Text
@@ -215,9 +174,9 @@ const ListItem = () => {
                 fontSize={"lg"}
                 fontWeight={"600"}
               >
-                Amount
+                Price
               </Text>
-              <Input type="number" className="amount" placeholder="amount" />
+              <Input type={"number"} className="price" placeholder="100000" />
             </Box>
             <Box display={"flex"} gap={2} alignItems="center">
               <Text
@@ -225,9 +184,9 @@ const ListItem = () => {
                 fontSize={"lg"}
                 fontWeight={"600"}
               >
-                Contact No.
+                Seller Id
               </Text>
-              <Input className="contact" placeholder="contact" />
+              <Input className="seller" placeholder="Seller ID" />
             </Box>
           </Stack>
           <Box w={"100%"} display="flex" justifyContent={"center"}>
@@ -251,7 +210,7 @@ const ListItem = () => {
                 colorScheme="teal"
                 onClick={addItem}
               >
-                List Item
+                Send Request
               </Button>
             )}
           </Box>
@@ -261,4 +220,4 @@ const ListItem = () => {
   );
 };
 
-export default ListItem;
+export default BuyRequest;
