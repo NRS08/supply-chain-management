@@ -74,14 +74,20 @@ export default function Requests() {
         <Button
           variant={"link"}
           colorScheme={"purple"}
-          onClick={() => getData(url + "false")}
+          onClick={() => {
+            setHeading("Pending Requests");
+            getData(url + "false");
+          }}
         >
           Pending
         </Button>
         <Button
           variant={"link"}
           colorScheme={"purple"}
-          onClick={() => getData(url + "true")}
+          onClick={() => {
+            setHeading("Accepted Requests");
+            getData(url + "false");
+          }}
         >
           Accepted
         </Button>
