@@ -85,8 +85,8 @@ export default function Requests() {
           variant={"link"}
           colorScheme={"purple"}
           onClick={() => {
-            setHeading("Accepted Requests");
-            getData(url + "false");
+            setHeading("Acepted Requests");
+            getData(url + "true");
           }}
         >
           Accepted
