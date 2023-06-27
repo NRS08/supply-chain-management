@@ -43,6 +43,11 @@ const ListItem = () => {
   const [message, setMessage] = useState("Message");
   const [status, setStatus] = useState("error");
   const { colorMode } = useColorMode();
+  const { account, setAccount, contract, setContract, provider, setProvider } =
+    useGlobalContext();
+
+  console.log(account);
+  console.log(contract.address);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -62,6 +67,12 @@ const ListItem = () => {
       const amount = parseInt(document.querySelector(".amount").value);
       const contact = document.querySelector(".contact").value;
       //   console.log(name, role, Iname, harvest, amount, contact);
+
+      const tx = await contract.assignProduct(Iname, amount);
+      await tx.wait();
+      contract.on("ProductAssign", (id, name, quantity) => {
+        alert(`${id} assign to product ${name} having ${quantity} kg amount`);
+      });
 
       const { data } = await axios.post(
         url,
