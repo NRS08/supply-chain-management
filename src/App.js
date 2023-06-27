@@ -9,6 +9,7 @@ import BuyRequest from "./components/BuyRequest";
 import Requests from "./components/Requests";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
+import MyPDF from "./components/1";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/items" element={<Items />} />
           <Route path="/buyRequest" element={<BuyRequest />} />
           <Route path="/requests" element={<Requests />} />
+          <Route path="/1" element={<MyPDF />} />
         </Routes>
       </div>
     </ChakraProvider>

@@ -16,6 +16,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
+import { jsPDF } from "jspdf";
+import { sha256 } from "js-sha256";
+import { useGlobalContext } from "../context";
 
 export default function Requests() {
   const url =
@@ -24,6 +27,82 @@ export default function Requests() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([false]);
   const [heading, setHeading] = useState("Pending Requests");
+  const [location, setLocation] = useState(null);
+  const [Doc, setDoc] = useState(null);
+  const { account, setAccount, contract, setContract, provider, setProvider } =
+    useGlobalContext();
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      // Get the current position
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var locationString = latitude + "," + longitude;
+        setLocation(locationString);
+        // Do something with the latitude and longitude values
+        console.log("Latitude: " + latitude);
+        console.log("Longitude: " + longitude);
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
+  async function generateHash(x) {
+    const hash = sha256(x);
+    return hash;
+  }
+  async function genPdf() {
+    const doc = new jsPDF();
+
+    // Set font size and styling
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+
+    // Add information
+    doc.text("ID:", 20, 10);
+    doc.text("Name:", 20, 20);
+    doc.text("Product Name:", 20, 30);
+    doc.text("Quantity:", 20, 40);
+    doc.text("Price:", 20, 50);
+    doc.text("Location:", 20, 60);
+    doc.text("Time:", 20, 70);
+    doc.text("Buyer:", 20, 80);
+
+    // Set font style for the values
+    doc.setFont("helvetica", "normal");
+
+    // Add values
+    doc.text("1000", 80, 10);
+    doc.text("AA", 80, 20);
+    doc.text("A", 80, 30);
+    doc.text("100", 80, 40);
+    doc.text("100000", 80, 50);
+    doc.text("a", 80, 60);
+    doc.text("10:00 AM", 80, 70);
+    doc.text("Jane Smith", 80, 80);
+
+    const generatedPdfContent = doc.output("arraybuffer");
+    const hash = await generateHash(generatedPdfContent);
+
+    console.log(hash);
+    sellProduct(hash, doc);
+  }
+
+  async function sellProduct(hash, doc) {
+    console.log("hi");
+    const tx = await contract.sellProduct(
+      1000,
+      "0x8b112fBa060afeA9eb8fEc329feb1d2A468a46A5",
+      100000,
+      location,
+      hash
+    );
+    await tx.wait();
+    doc.save("1_scm_nirant.pdf");
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -34,6 +113,7 @@ export default function Requests() {
       getData(u);
     }
   }, []);
+
   const token = localStorage.getItem("token");
   const getData = async (url) => {
     try {
@@ -162,6 +242,7 @@ export default function Requests() {
                       colorScheme="green"
                       fontSize={"sm"}
                       rounded={"full"}
+                      onClick={genPdf}
                     >
                       {`Accept`}
                     </Button>
