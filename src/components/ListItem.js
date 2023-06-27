@@ -46,8 +46,7 @@ const ListItem = () => {
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
 
-  console.log(account);
-  console.log(contract.address);
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
