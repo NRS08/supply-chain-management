@@ -19,6 +19,7 @@ import axios from "axios";
 import { jsPDF } from "jspdf";
 import { sha256 } from "js-sha256";
 import { useGlobalContext } from "../context";
+import Loader from "./Loader";
 
 export default function Requests() {
   const url =
@@ -109,7 +110,6 @@ export default function Requests() {
       navigate("/login");
     } else {
       let u = url + "false";
-      console.log(u);
       getData(u);
     }
   }, []);
@@ -132,9 +132,9 @@ export default function Requests() {
 
   if (isLoading) {
     return (
-      <Stack h={"100vh"} w="100%" justify="center" align="center">
-        <Text fontSize={"4xl"}>Loading...</Text>
-      </Stack>
+      // <Stack h={"100vh"} w="100%" justify="center" align="center">
+      <Loader />
+      // </Stack>
     );
   }
 

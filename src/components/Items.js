@@ -10,11 +10,13 @@ import {
   Badge,
   useColorModeValue,
   Input,
+  Flex,
 } from "@chakra-ui/react";
 import Navbar2 from "./Navbar2";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import Loader from "./Loader";
 import axios from "axios";
 
 export default function Items() {
@@ -58,9 +60,9 @@ export default function Items() {
 
   if (isLoading) {
     return (
-      <Stack h={"100vh"} w="100%" justify="center" align="center">
-        <Text fontSize={"4xl"}>Loading...</Text>
-      </Stack>
+      // <Flex h={"100vh"} w="100%" justify="center" align="center">
+      <Loader />
+      // </Flex>
     );
   }
 
