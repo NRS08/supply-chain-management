@@ -104,8 +104,8 @@ export default function Register() {
       const alert = document.querySelector(".alert");
       alert.style.display = "flex";
       document.querySelector("#name").value = "";
-      document.querySelector("#Email").value = "";
-      document.querySelector("#Password").value = "";
+      // document.querySelector("#Email").value = "";
+      // document.querySelector("#Password").value = "";
       document.querySelector("#role").value = "";
       setIsLoading(false);
       setTimeout(() => {

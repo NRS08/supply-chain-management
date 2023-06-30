@@ -37,7 +37,11 @@ import {
 } from "@chakra-ui/react";
 
 const BuyRequest = () => {
-  const url = "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/request";
+  const urlReq =
+    "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/request";
+
+  const urlID =
+    "https://tiny-jade-marlin-belt.cyclic.app/api/v1/listing/items?ID=";
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("Message");
@@ -55,6 +59,7 @@ const BuyRequest = () => {
   const addItem = async () => {
     try {
       setIsLoading(true);
+      const prodID = document.querySelector(".ID").value;
       const Iname = document.querySelector(".Iname").value;
       const amount = parseInt(document.querySelector(".quantity").value);
       const price = parseInt(document.querySelector(".price").value);
@@ -62,8 +67,9 @@ const BuyRequest = () => {
       const seller = document.querySelector(".seller").value;
 
       const { data } = await axios.post(
-        url,
+        urlReq,
         {
+          prodID,
           Iname,
           amount,
           price,
@@ -81,6 +87,7 @@ const BuyRequest = () => {
       const alert = document.querySelector(".alert");
       alert.style.display = "flex";
       setIsLoading(false);
+      document.querySelector(".ID").value = "";
       document.querySelector(".quantity").value = "";
       document.querySelector(".Iname").value = "";
       document.querySelector(".price").value = "";
@@ -88,9 +95,8 @@ const BuyRequest = () => {
       setTimeout(() => {
         const alert = document.querySelector(".alert");
         alert.style.display = "none";
-      }, 500);
+      }, 2500);
     } catch (error) {
-      console.log(error);
       setStatus("error");
       setMessage(error.response.data.msg);
       setIsLoading(false);
@@ -148,6 +154,16 @@ const BuyRequest = () => {
             Buy Request
           </Text>
           <Stack mt={2} direction={"column"} gap={1}>
+            <Box display={"flex"} gap={2} alignItems="center">
+              <Text
+                w={{ base: "40%", md: "30%", lg: "20%" }}
+                fontSize={"lg"}
+                fontWeight={"600"}
+              >
+                Item ID
+              </Text>
+              <Input className="ID" placeholder="ID" />
+            </Box>
             <Box display={"flex"} gap={2} alignItems="center">
               <Text
                 w={{ base: "40%", md: "30%", lg: "20%" }}

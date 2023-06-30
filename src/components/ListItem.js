@@ -6,28 +6,8 @@ import Navbar2 from "./Navbar2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
-  IconButton,
-  Avatar,
   Box,
-  CloseButton,
-  Flex,
-  HStack,
-  VStack,
-  Icon,
-  useColorModeValue,
-  Link,
-  Drawer,
-  DrawerContent,
   Text,
-  useDisclosure,
-  BoxProps,
-  FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Heading,
   Button,
   Stack,
   Input,
@@ -42,11 +22,10 @@ const ListItem = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("Message");
   const [status, setStatus] = useState("error");
+  const [ID, setID] = useState();
   const { colorMode } = useColorMode();
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
-
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -70,12 +49,14 @@ const ListItem = () => {
       const tx = await contract.assignProduct(Iname, amount);
       await tx.wait();
       contract.on("ProductAssign", (id, name, quantity) => {
+        setID(id);
         alert(`${id} assign to product ${name} having ${quantity} kg amount`);
       });
-
+      const prodID = ID;
       const { data } = await axios.post(
         url,
         {
+          prodID,
           name,
           role,
           Iname,
