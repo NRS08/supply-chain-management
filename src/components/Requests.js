@@ -24,12 +24,15 @@ import Loader from "./Loader";
 export default function Requests() {
   const url =
     "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/requests?accepted=";
+  const urlWallet =
+    "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/wallet";
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([false]);
   const [heading, setHeading] = useState("Pending Requests");
   const [location, setLocation] = useState(null);
   const [Doc, setDoc] = useState(null);
+  const [wallet, setWallet] = useState("");
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
 
@@ -115,9 +118,26 @@ export default function Requests() {
   }, []);
 
   const token = localStorage.getItem("token");
+
+  const getWallet = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(urlWallet, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setIsLoading(false);
+      setWallet(data.account);
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+  };
   const getData = async (url) => {
     try {
       setIsLoading(true);
+      getWallet();
       const { data } = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -128,6 +148,10 @@ export default function Requests() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const buyer = (id) => {
+    console.log(wallet, id);
   };
 
   if (isLoading) {
@@ -242,7 +266,7 @@ export default function Requests() {
                       colorScheme="green"
                       fontSize={"sm"}
                       rounded={"full"}
-                      onClick={genPdf}
+                      onClick={() => buyer(item.buyerAccount)}
                     >
                       {`Accept`}
                     </Button>
