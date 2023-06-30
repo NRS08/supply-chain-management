@@ -14,7 +14,7 @@
   font-weight: 400;
 }
 
-span {
+.span {
   position: relative;
   top: 0.63em;
   display: inline-block;

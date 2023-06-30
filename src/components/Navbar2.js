@@ -111,15 +111,15 @@ export default function Navbar2() {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue("white", "gray.800")}
-        color={useColorModeValue("gray.600", "white")}
+        bg="gray.800"
+        color="white"
         minH={"60px"}
         height={"10vh"}
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
         borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.900")}
+        borderColor="gray.900"
         align={"center"}
       >
         <Flex
@@ -216,17 +216,17 @@ const DesktopNav = () => {
   const navigate = useNavigate();
   // const onclk = NAV_ITEMS.onclk;
   const handleClick = (onclk) => {
-    if (onclk == "signOut") {
+    if (onclk === "signOut") {
       localStorage.removeItem("token");
       localStorage.removeItem("scmName");
       navigate("/");
-    } else if (onclk == "listing") {
+    } else if (onclk === "listing") {
       navigate("/listItem");
-    } else if (onclk == "items") {
+    } else if (onclk === "items") {
       navigate("/items");
-    } else if (onclk == "buyReq") {
+    } else if (onclk === "buyReq") {
       navigate("/buyRequest");
-    } else if (onclk == "requests") {
+    } else if (onclk === "requests") {
       navigate("/requests");
     }
   };
@@ -279,11 +279,11 @@ const DesktopNav = () => {
 const DesktopSubNav = ({ label, href, subLabel, onclk }: NavItem) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    if (onclk == "signOut") {
+    if (onclk === "signOut") {
       localStorage.removeItem("token");
       localStorage.removeItem("scmName");
       navigate("/");
-    } else if (onclk == "listing") {
+    } else if (onclk === "listing") {
       navigate("/listItem");
     }
   };
@@ -347,13 +347,13 @@ const MobileNavItem = ({ label, children, href, onclk }: NavItem) => {
       localStorage.removeItem("token");
       localStorage.removeItem("scmName");
       navigate("/");
-    } else if (onclk == "listing") {
+    } else if (onclk === "listing") {
       navigate("/listItem");
-    } else if (onclk == "items") {
+    } else if (onclk === "items") {
       navigate("/items");
-    } else if (onclk == "buyReq") {
+    } else if (onclk === "buyReq") {
       navigate("/buyRequest");
-    } else if (onclk == "requests") {
+    } else if (onclk === "requests") {
       navigate("/requests");
     }
   };

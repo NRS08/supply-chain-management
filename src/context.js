@@ -4,7 +4,7 @@ const AppProvider = ({ children }) => {
   const [account, setAccount] = useState(null);
   const [contract, setContract] = useState(null);
   const [provider, setProvider] = useState(null);
-  const [name, setName] = React.useState("name");
+  const [name, setName] = useState("name");
   return (
     <AppContext.Provider
       value={{

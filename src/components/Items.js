@@ -143,12 +143,12 @@ export default function Items() {
                   <Text fontWeight={600} color={"gray.500"} mb={4}>
                     {item.role}
                   </Text>
-                  <Text textAlign={"center"} color={"gray.400"} px={3}>
+                  <Box textAlign={"center"} color={"gray.400"} px={3}>
                     <Text fontWeight={"600"} color={"white"}>
                       Harvested on{" "}
                     </Text>
                     <Text color={"#e95065"}>{item.harvestDate}</Text>
-                  </Text>
+                  </Box>
 
                   <Stack mt={8} direction={"row"} spacing={4}>
                     <Button
