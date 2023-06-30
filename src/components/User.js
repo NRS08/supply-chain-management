@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import "./CSS/Home.css";
 import { Button, Input } from "@chakra-ui/react";
@@ -6,9 +6,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useGlobalContext } from "../context";
 import Navbar2 from "./Navbar2";
 import { useNavigate } from "react-router-dom";
+import { ethers } from "ethers";
+import SCM from "../artifacts/contracts/SupplyChain.sol/SupplyChain.json";
 
 const User = () => {
   const navigate = useNavigate();
+  const [id, setid] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -17,21 +20,25 @@ const User = () => {
     }
   }, []);
 
-  const { account, setAccount, contract, setContract, provider, setProvider } =
-    useGlobalContext();
+  const provider = new ethers.providers.JsonRpcProvider(
+    "https://eth-sepolia.g.alchemy.com/v2/-4e5fsDjluNgzUNf9u0nNElwVvNV2QYq"
+  );
+  const wallet = new ethers.Wallet(
+    "9950025c546ede2c2bb22c6dd3b984efe4f7622c4e22eb26f7facffad32e099b",
+    provider
+  );
+  const contract = new ethers.Contract(
+    "0xD355E559ee9374Aa3906706F336012F398F88469",
+    SCM.abi,
+    wallet
+  );
+
+  function HandleInputChange(e) {
+    setid(e.target.value);
+  }
+
   async function fetch() {
-    const tx = await contract.assignProduct("Wheat", 1000);
-    await tx.wait();
-    console.log(account);
-    console.log(contract);
-    const tx2 = await contract.sellProduct(
-      1000,
-      "0xa777122Ad242e2800781e8692a0591b964396aF4",
-      1000000,
-      "21.0010° N, 78.2307° E"
-    );
-    await tx2.wait();
-    const data = await contract.getProductDetails(1000);
+    const data = await contract.getProductDetails(id);
     console.log(data);
   }
   return (
@@ -47,7 +54,10 @@ const User = () => {
           </p>
           <p className="enter">Enter the product Id to check its information</p>
           <div className="search">
-            <Input placeholder="Enter Product ID" />
+            <Input
+              placeholder="Enter Product ID"
+              onChange={HandleInputChange}
+            />
             <Button onClick={fetch} colorScheme="teal" variant="solid">
               <SearchIcon />
             </Button>
