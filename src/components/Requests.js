@@ -20,6 +20,7 @@ import { jsPDF } from "jspdf";
 import { sha256 } from "js-sha256";
 import { useGlobalContext } from "../context";
 import Loader from "./Loader";
+import { ethers } from "ethers";
 
 export default function Requests() {
   const url =
@@ -33,9 +34,13 @@ export default function Requests() {
   const [location, setLocation] = useState(null);
   const [Doc, setDoc] = useState(null);
   const [wallet, setWallet] = useState("");
+  const [map, setmap] = useState(null);
+  const [lname, setLname] = useState(null);
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
 
+  const name = localStorage.getItem("scmName");
+  console.log(name);
   useEffect(() => {
     if ("geolocation" in navigator) {
       // Get the current position
@@ -44,9 +49,25 @@ export default function Requests() {
         var longitude = position.coords.longitude;
         var locationString = latitude + "," + longitude;
         setLocation(locationString);
+        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+        setmap(mapUrl);
+
         // Do something with the latitude and longitude values
         console.log("Latitude: " + latitude);
         console.log("Longitude: " + longitude);
+
+        const nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+
+        fetch(nominatimApiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            const locationName = data.display_name;
+            setLname(locationName);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert(error);
+          });
       });
     } else {
       console.log("Geolocation is not supported by this browser.");
@@ -57,62 +78,148 @@ export default function Requests() {
     const hash = sha256(x);
     return hash;
   }
-  async function genPdf() {
-    const doc = new jsPDF();
+  async function genPdf(_buyer) {
+    if (contract !== null) {
+      if (account === wallet) {
+        try {
+          let p_id, iName, quantity, price, buyerName;
 
-    // Set font size and styling
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
+          data.map((item) => {
+            p_id = item.prodID;
+            iName = item.Iname;
+            price = item.price;
+            quantity = item.amount;
+            buyerName = item.buyerName;
+          });
 
-    // Add information
-    doc.text("ID:", 20, 10);
-    doc.text("Name:", 20, 20);
-    doc.text("Product Name:", 20, 30);
-    doc.text("Quantity:", 20, 40);
-    doc.text("Price:", 20, 50);
-    doc.text("Location:", 20, 60);
-    doc.text("Time:", 20, 70);
-    doc.text("Buyer:", 20, 80);
+          const doc = new jsPDF();
 
-    // Set font style for the values
-    doc.setFont("helvetica", "normal");
+          // Set background color
+          doc.setFillColor(220, 220, 220); // Light gray background color
+          doc.rect(
+            0,
+            0,
+            doc.internal.pageSize.getWidth(),
+            doc.internal.pageSize.getHeight(),
+            "F"
+          );
 
-    // Add values
-    doc.text("1000", 80, 10);
-    doc.text("AA", 80, 20);
-    doc.text("A", 80, 30);
-    doc.text("100", 80, 40);
-    doc.text("100000", 80, 50);
-    doc.text("a", 80, 60);
-    doc.text("10:00 AM", 80, 70);
-    doc.text("Jane Smith", 80, 80);
+          // Set font size and styling for header
+          doc.setFontSize(18);
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(34, 34, 34); // Dark gray text color
 
-    const generatedPdfContent = doc.output("arraybuffer");
-    const hash = await generateHash(generatedPdfContent);
+          // Add header
+          doc.text("Product Receipt", 20, 20);
 
-    console.log(hash);
-    sellProduct(hash, doc);
-  }
+          // Set font size and styling for information labels
+          doc.setFontSize(12);
+          doc.setFont("helvetica", "bold");
 
-  async function sellProduct(hash, doc) {
-    console.log("hi");
-    const tx = await contract.sellProduct(
-      1000,
-      "0x8b112fBa060afeA9eb8fEc329feb1d2A468a46A5",
-      100000,
-      location,
-      hash
-    );
-    await tx.wait();
-    doc.save("1_scm_nirant.pdf");
+          // Add information labels
+          doc.text("Product ID: " + p_id, 20, 40);
+          doc.text("Name: " + name, 20, 50);
+          doc.text("Product Name: " + iName, 20, 60);
+          doc.text("Quantity: " + quantity, 20, 70);
+          doc.text("Price: " + price, 20, 80);
+          doc.text("Location: ", 20, 90);
+
+          doc.setFontSize(12);
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(0, 0, 255);
+          const text = lname;
+          const url = map;
+          doc.textWithLink(text, 40, 90, { url });
+
+          doc.setFontSize(12);
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(34, 34, 34);
+          doc.text("Buyer: " + buyerName, 20, 100);
+
+          // Set font size and styling for footer
+          doc.setFontSize(10);
+          doc.setTextColor(34, 34, 34); // Dark gray text color
+
+          // Add footer
+          const date = new Date();
+          const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+          doc.text("Receipt generated on:", 20, 130);
+          doc.text(formattedDate, 20, 140);
+
+          // Add note in red color
+          doc.setTextColor(255, 0, 0); // Red text color
+          doc.text(
+            "Note: To ensure the integrity of the document and maintain its validity, please refrain from making any ",
+            20,
+            160
+          );
+          doc.text(
+            "alterations. Even a single modification can render the document invalid.",
+            20,
+            165
+          );
+
+          const generatedPdfContent = doc.output("arraybuffer");
+          const hash = await generateHash(generatedPdfContent);
+
+          console.log(hash);
+
+          const data_product = await contract.IdTOProduct(p_id);
+
+          console.log(
+            data_product.productName,
+            Number(data_product.productQuantity)
+          );
+
+          if (
+            data_product.productName === iName &&
+            Number(data_product.productQuantity) >= quantity
+          ) {
+            const tx = await contract.sellProduct(
+              p_id,
+              _buyer,
+              quantity,
+              price,
+              location,
+              hash
+            );
+            await tx.wait();
+            doc.save(`Product_Reciept_${p_id}.pdf`);
+          } else {
+            alert("Invalid Buy Request");
+          }
+        } catch (error) {
+          if (error.code === 4001) {
+            // User rejected the transaction
+            console.log("Transaction rejected by the user");
+          } else if (error.code === -32002) {
+            // Insufficient funds
+            console.log("Insufficient funds for the transaction");
+          } else if (error.message.includes("NotOwner")) {
+            alert("This product doesn't belong to you");
+          } else {
+            // Handle other error conditions
+            console.log("Error while selling product:", error.message);
+          }
+        }
+      } else {
+        alert("Invalid Wallet");
+      }
+    } else {
+      alert("Connect Wallet");
+    }
   }
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log(token);
     if (!token) {
+      console.log("hey");
       navigate("/login");
     } else {
+      console.log("hi");
       let u = url + "false";
+      console.log(u);
       getData(u);
     }
   }, []);
@@ -150,12 +257,12 @@ export default function Requests() {
     }
   };
 
-  const buyer = (id) => {
-    console.log(wallet, id);
-  };
-
   if (isLoading) {
-    return <Loader />;
+    return (
+      // <Stack h={"100vh"} w="100%" justify="center" align="center">
+      <Loader />
+      // </Stack>
+    );
   }
 
   return (
@@ -262,7 +369,7 @@ export default function Requests() {
                       colorScheme="green"
                       fontSize={"sm"}
                       rounded={"full"}
-                      onClick={() => buyer(item.buyerAccount)}
+                      onClick={() => genPdf(item.buyerAccount)}
                     >
                       {`Accept`}
                     </Button>

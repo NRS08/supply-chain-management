@@ -17,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 
 const ListItem = () => {
+  const urlWallet =
+    "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/wallet";
   const url = "https://tiny-jade-marlin-belt.cyclic.app/api/v1/listing/item";
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +26,7 @@ const ListItem = () => {
   const [status, setStatus] = useState("error");
   const [ID, setID] = useState();
   const { colorMode } = useColorMode();
+  const [wallet, setWallet] = useState("");
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
 
@@ -31,28 +34,30 @@ const ListItem = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");
+    } else {
+      getWallet();
     }
   }, []);
   const token = localStorage.getItem("token");
 
-  const addItem = async () => {
+  const getWallet = async () => {
     try {
       setIsLoading(true);
-      const name = localStorage.getItem("scmName");
-      const role = document.querySelector(".role").value;
-      const Iname = document.querySelector(".Iname").value;
-      const harvestDate = document.querySelector(".harvest").value;
-      const amount = parseInt(document.querySelector(".amount").value);
-      const contact = document.querySelector(".contact").value;
-      //   console.log(name, role, Iname, harvest, amount, contact);
-
-      const tx = await contract.assignProduct(Iname, amount);
-      await tx.wait();
-      contract.on("ProductAssign", (id, name, quantity) => {
-        setID(id);
-        alert(`${id} assign to product ${name} having ${quantity} kg amount`);
+      const { data } = await axios.get(urlWallet, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      const prodID = ID;
+      setIsLoading(false);
+      setWallet(data.account);
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+  };
+
+  async function add(prodID, name, role, Iname, harvestDate, amount, contact) {
+    try {
       const { data } = await axios.post(
         url,
         {
@@ -85,6 +90,60 @@ const ListItem = () => {
         const alert = document.querySelector(".alert");
         alert.style.display = "none";
       }, 500);
+    } catch (error) {
+      setStatus("error");
+      setMessage(error.response.data.msg);
+      setIsLoading(false);
+      const alert = document.querySelector(".alert");
+      alert.style.display = "flex";
+      //   document.querySelector(".name").value = "";
+      setTimeout(() => {
+        const alert = document.querySelector(".alert");
+        alert.style.display = "none";
+      }, 3000);
+    }
+  }
+
+  const addItem = async () => {
+    try {
+      if (contract !== null) {
+        if (account === wallet) {
+          try {
+            setIsLoading(true);
+            const name = localStorage.getItem("scmName");
+            const role = document.querySelector(".role").value;
+            const Iname = document.querySelector(".Iname").value;
+            const harvestDate = document.querySelector(".harvest").value;
+            const amount = parseInt(document.querySelector(".amount").value);
+            const contact = document.querySelector(".contact").value;
+            //   console.log(name, role, Iname, harvest, amount, contact);
+
+            const tx = await contract.assignProduct(Iname, amount);
+            await tx.wait();
+            contract.once("ProductAssign", (id, name, quantity) => {
+              add(Number(id), name, role, Iname, harvestDate, amount, contact);
+              window.alert(
+                `${id} assign to product ${name} having ${quantity} kg amount`
+              );
+            });
+          } catch (error) {
+            if (error.code === 4001) {
+              // User rejected the transaction
+              console.log("Transaction rejected by the user");
+            } else if (error.code === -32002) {
+              // Insufficient funds
+              console.log("Insufficient funds for the transaction");
+            } else {
+              // Handle other error conditions
+              console.log("Error while selling product:", error.message);
+            }
+          }
+        } else {
+          alert("Invalid Wallet Address");
+        }
+      } else {
+        alert("Connect Wallet");
+      }
     } catch (error) {
       setStatus("error");
       setMessage(error.response.data.msg);

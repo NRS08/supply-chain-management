@@ -28,7 +28,7 @@ const User = () => {
     provider
   );
   const contract = new ethers.Contract(
-    "0xD355E559ee9374Aa3906706F336012F398F88469",
+    "0x8D3F6117938FC8a14A8f1ee1AdA243Ab82b2c328",
     SCM.abi,
     wallet
   );
@@ -38,8 +38,22 @@ const User = () => {
   }
 
   async function fetch() {
-    const data = await contract.getProductDetails(id);
-    console.log(data);
+    try {
+      const product = await contract.getProductDetails(id);
+      console.log(
+        Number(product.productID),
+        product.productName,
+        Number(product.productQuantity),
+        Number(product.productPrice),
+        product.productLocation,
+        Number(product.productTimestamp),
+        product.productOwner
+      );
+    } catch (error) {
+      if (error.message.includes("Invalid product ID")) {
+        alert("Product ID doesn't exist");
+      }
+    }
   }
   return (
     <>
