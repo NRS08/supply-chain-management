@@ -110,7 +110,7 @@ const ListItem = () => {
         if (account === wallet) {
           try {
             setIsLoading(true);
-            const name = localStorage.getItem("scmName");
+            const name1 = localStorage.getItem("scmName");
             const role = document.querySelector(".role").value;
             const Iname = document.querySelector(".Iname").value;
             const harvestDate = document.querySelector(".harvest").value;
@@ -121,7 +121,7 @@ const ListItem = () => {
             const tx = await contract.assignProduct(Iname, amount);
             await tx.wait();
             contract.once("ProductAssign", (id, name, quantity) => {
-              add(Number(id), name, role, Iname, harvestDate, amount, contact);
+              add(Number(id), name1, role, Iname, harvestDate, amount, contact);
               window.alert(
                 `${id} assign to product ${name} having ${quantity} kg amount`
               );
