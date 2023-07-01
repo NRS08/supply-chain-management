@@ -132,6 +132,9 @@ export default function Items() {
                   textAlign={"center"}
                 >
                   <Heading fontSize={"2xl"} fontFamily={"body"}>
+                    {`ID - ${item.prodID}`}
+                  </Heading>
+                  <Heading fontSize={"2xl"} fontFamily={"body"}>
                     {`Item - ${item.Iname}`}
                   </Heading>
                   <Text fontWeight={600} color={"gray.500"} mb={2}>

@@ -83,7 +83,7 @@ const BuyRequest = () => {
         }
       );
       setStatus("success");
-      setMessage("Item Added");
+      setMessage("Resquest sent");
       const alert = document.querySelector(".alert");
       alert.style.display = "flex";
       setIsLoading(false);

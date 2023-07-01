@@ -155,11 +155,7 @@ export default function Requests() {
   };
 
   if (isLoading) {
-    return (
-      // <Stack h={"100vh"} w="100%" justify="center" align="center">
-      <Loader />
-      // </Stack>
-    );
+    return <Loader />;
   }
 
   return (
