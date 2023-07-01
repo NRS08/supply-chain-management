@@ -1,14 +1,26 @@
 import React, { useRef, useState } from "react";
 import { jsPDF } from "jspdf";
 import { sha256 } from "js-sha256";
-import { useGlobalContext } from "../context";
-import Navbar2 from "./Navbar2";
+import { ethers } from "ethers";
+import Navbar from "./Navbar";
+import SCM from "../artifacts/contracts/SupplyChain.sol/SupplyChain.json";
 
 const MyPDF = () => {
-  const { account, setAccount, contract, setContract, provider, setProvider } =
-    useGlobalContext();
   const pdfRef = useRef(null);
   const [pdf, setpdf] = useState(null);
+
+  const provider = new ethers.providers.JsonRpcProvider(
+    "https://eth-sepolia.g.alchemy.com/v2/-4e5fsDjluNgzUNf9u0nNElwVvNV2QYq"
+  );
+  const wallet = new ethers.Wallet(
+    "9950025c546ede2c2bb22c6dd3b984efe4f7622c4e22eb26f7facffad32e099b",
+    provider
+  );
+  const contract = new ethers.Contract(
+    "0x8D3F6117938FC8a14A8f1ee1AdA243Ab82b2c328",
+    SCM.abi,
+    wallet
+  );
 
   const handlePDFInputChange = async (event) => {
     const file = event.target.files[0];
@@ -39,7 +51,7 @@ const MyPDF = () => {
 
   return (
     <>
-      <Navbar2 />
+      <Navbar />
       <div>
         <input type="file" accept=".pdf" onChange={handlePDFInputChange} />
       </div>
@@ -50,4 +62,3 @@ const MyPDF = () => {
 };
 
 export default MyPDF;
-//8eb4f988e348e7ddec1b82c29e71421ce158d1fbbf64c450ef44dda72110ad4f
