@@ -15,6 +15,7 @@ import {
   Alert,
   AlertIcon,
   useColorMode,
+  Select,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
@@ -77,6 +78,7 @@ export default function Register() {
     let email = document.querySelector("#Email").value;
     let password = document.querySelector("#Password").value;
     let role = document.querySelector("#role").value;
+
     try {
       setIsLoading(true);
       const res = await axios.post(url, {
@@ -188,9 +190,14 @@ export default function Register() {
                   </FormControl>
                 </Box>
                 <Box>
-                  <FormControl id="lastName">
+                  <FormControl>
                     <FormLabel>Role</FormLabel>
-                    <Input id="role" placeholder="Eg. Farmer" type="text" />
+                    <Select id="role" placeholder="Select role">
+                      <option value="Farmer">Farmer</option>
+                      <option value="Distributer">Distributer</option>
+                      <option value="Exporter">Exporter</option>
+                      <option value="Other">Other</option>
+                    </Select>
                   </FormControl>
                 </Box>
               </HStack>

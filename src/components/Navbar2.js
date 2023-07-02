@@ -89,6 +89,7 @@ export default function Navbar2() {
   const signOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("scmName");
+    localStorage.removeItem("scmRole");
     navigate("/");
   };
 
@@ -220,6 +221,7 @@ const DesktopNav = () => {
     if (onclk === "signOut") {
       localStorage.removeItem("token");
       localStorage.removeItem("scmName");
+      localStorage.removeItem("scmRole");
       navigate("/");
     } else if (onclk === "listing") {
       navigate("/listItem");
@@ -283,6 +285,7 @@ const DesktopSubNav = ({ label, href, subLabel, onclk }: NavItem) => {
     if (onclk === "signOut") {
       localStorage.removeItem("token");
       localStorage.removeItem("scmName");
+      localStorage.removeItem("scmRole");
       navigate("/");
     } else if (onclk === "listing") {
       navigate("/listItem");
@@ -347,6 +350,7 @@ const MobileNavItem = ({ label, children, href, onclk }: NavItem) => {
     if (onclk == "signOut") {
       localStorage.removeItem("token");
       localStorage.removeItem("scmName");
+      localStorage.removeItem("scmRole");
       navigate("/");
     } else if (onclk === "listing") {
       navigate("/listItem");

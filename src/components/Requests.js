@@ -399,99 +399,102 @@ export default function Requests() {
         </Heading>
       ) : (
         <Box
-          width={"100%"}
           display={"flex"}
-          justifyContent={{
-            base: "center",
-            sm: "center",
-            md: "space-around",
-            lg: "center",
-          }}
-          alignItems={"center"}
-          gap={4}
-          p={{ base: 2, md: 6, lg: 6 }}
-          flexWrap={"wrap"}
-          textTransform={"capitalize"}
+          justifyContent={"center"}
+          width={"100%"}
+          p={0}
+          m={0}
         >
-          {data.map((item) => {
-            return (
-              <Box
-                key={item._id}
-                py={2}
-                flex={{
-                  base: "0 0 60%",
-                  sm: "0 0 50%",
-                  md: "0 0 33.33%",
-                  lg: "0 0 20%",
-                }}
-                position={"relative"}
-              >
+          <Box
+            className="items"
+            p={{ base: 2, md: 6, lg: 8 }}
+            textTransform={"capitalize"}
+          >
+            {data.map((item) => {
+              return (
                 <Box
-                  className={"a" + item._id}
-                  position={"absolute"}
-                  height={"100%"}
-                  width={"100%"}
-                  backgroundColor={"#171923"}
-                  visibility={"hidden"}
-                  zIndex={"2"}
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
+                  key={item._id}
+                  py={2}
+                  flex={{
+                    base: "0 0 60%",
+                    sm: "0 0 50%",
+                    md: "0 0 33.33%",
+                    lg: "0 0 20%",
+                  }}
                 >
-                  <Spinner />
-                </Box>
-                <Box
-                  maxW={"320px"}
-                  w={"full"}
-                  bg={"gray.900"}
-                  boxShadow={"2xl"}
-                  rounded={"lg"}
-                  p={6}
-                  textAlign={"center"}
-                >
-                  <Heading fontSize={"2xl"} fontFamily={"body"}>
-                    {`Item - ${item.Iname}`}
-                  </Heading>
-                  <Text fontWeight={600} color={"gray.500"}>
-                    {`${item.amount} Kg`}
-                  </Text>
-                  <Text fontWeight={600} color={"gray.500"} mb={2}>
-                    {`${item.price} Rupees`}
-                  </Text>
-                  <Heading fontSize={"xl"} fontFamily={"body"}>
-                    {`Buyer - ${item.buyerName}`}
-                  </Heading>
-                  {heading === "Pending Requests" ? (
-                    <Stack mt={8} direction={"row"} spacing={4}>
-                      <Button
-                        flex={1}
-                        variant={"outline"}
-                        colorScheme="green"
-                        fontSize={"sm"}
-                        rounded={"full"}
-                        onClick={() => genPdf(item)}
-                      >
-                        {`Accept`}
-                      </Button>
+                  <Box
+                    maxW={"320px"}
+                    w={"full"}
+                    bg={"gray.900"}
+                    boxShadow={"2xl"}
+                    rounded={"lg"}
+                    p={6}
+                    textAlign={"center"}
+                    position={"relative"}
+                  >
+                    <Box
+                      className={"a" + item._id}
+                      position={"absolute"}
+                      height={"100%"}
+                      width={"100%"}
+                      backgroundColor={"#171923"}
+                      visibility={"hidden"}
+                      zIndex={"2"}
+                      display={"flex"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      top={"0"}
+                      left={"0"}
+                    >
+                      <Spinner />
+                    </Box>
+                    <Heading fontSize={"2xl"} fontFamily={"body"}>
+                      {`ID - ${item.prodID}`}
+                    </Heading>
+                    <Heading fontSize={"2xl"} fontFamily={"body"}>
+                      {`Item - ${item.Iname}`}
+                    </Heading>
+                    <Text fontWeight={600} color={"gray.500"}>
+                      {`${item.amount} Kg`}
+                    </Text>
+                    <Text fontWeight={600} color={"gray.500"} mb={2}>
+                      {`${item.price} Rupees`}
+                    </Text>
+                    <Heading fontSize={"xl"} fontFamily={"body"}>
+                      {`Buyer - ${item.buyerName}`}
+                    </Heading>
+                    {heading === "Pending Requests" ? (
+                      <Stack mt={8} direction={"row"} spacing={4}>
+                        <Button
+                          flex={1}
+                          variant={"outline"}
+                          colorScheme="green"
+                          fontSize={"sm"}
+                          rounded={"full"}
+                          onClick={() => genPdf(item)}
+                        >
+                          {`Accept`}
+                        </Button>
 
-                      <Button
-                        flex={1}
-                        variant={"outline"}
-                        colorScheme="red"
-                        fontSize={"sm"}
-                        rounded={"full"}
-                        onClick={() => deleteReq(item._id)}
-                      >
-                        {`Reject`}
-                      </Button>
-                    </Stack>
-                  ) : (
-                    <></>
-                  )}
+                        <Button
+                          flex={1}
+                          variant={"outline"}
+                          colorScheme="red"
+                          fontSize={"sm"}
+                          rounded={"full"}
+                          onClick={() => deleteReq(item._id)}
+                        >
+                          {`Reject`}
+                        </Button>
+                      </Stack>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
                 </Box>
-              </Box>
-            );
-          })}
+              );
+            })}
+          </Box>
         </Box>
       )}
     </>

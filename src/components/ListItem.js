@@ -17,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 
 const ListItem = () => {
+  var now = new Date();
+  var minDate = now.toISOString().substring(0, 10);
   const urlWallet =
     "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/wallet";
   const url = "https://tiny-jade-marlin-belt.cyclic.app/api/v1/listing/item";
@@ -80,7 +82,6 @@ const ListItem = () => {
       const alert = document.querySelector(".alert");
       alert.style.display = "flex";
       setIsLoading(false);
-      //   document.querySelector(".name").value = "";
       document.querySelector(".role").value = "";
       document.querySelector(".Iname").value = "";
       document.querySelector(".harvest").value = "";
@@ -96,7 +97,6 @@ const ListItem = () => {
       setIsLoading(false);
       const alert = document.querySelector(".alert");
       alert.style.display = "flex";
-      //   document.querySelector(".name").value = "";
       setTimeout(() => {
         const alert = document.querySelector(".alert");
         alert.style.display = "none";
@@ -111,16 +111,14 @@ const ListItem = () => {
           try {
             setIsLoading(true);
             const name1 = localStorage.getItem("scmName");
-            const role = document.querySelector(".role").value;
+            const role = localStorage.getItem("scmRole");
             let Iname = document.querySelector(".Iname").value;
             const harvestDate = document.querySelector(".harvest").value;
             const amount = parseInt(document.querySelector(".amount").value);
             const contact = document.querySelector(".contact").value;
             //   console.log(name, role, Iname, harvest, amount, contact);
-
             Iname = Iname.toUpperCase();
             console.log(Iname);
-
             const tx = await contract.assignProduct(Iname, amount);
             await tx.wait();
             contract.once("ProductAssign", (id, name, quantity) => {
@@ -172,19 +170,6 @@ const ListItem = () => {
         justifyContent={"center"}
         alignItems={"flex-start"}
       >
-        {/* <Alert
-          className="alert"
-          variant={"solid"}
-          status={status}
-          position={"absolute"}
-          w={"auto"}
-          top="20px"
-          display={"none"}
-          justifyContent="center"
-        >
-          <AlertIcon />
-          {message}
-        </Alert> */}
         <Box
           className="alert"
           w={"100vw"}
@@ -218,30 +203,6 @@ const ListItem = () => {
             Add Item
           </Text>
           <Stack mt={2} direction={"column"} gap={1}>
-            {/* <Box display={"flex"} gap={2} alignItems="center">
-              <Text
-                w={{ base: "40%", md: "30%", lg: "20%" }}
-                fontSize={"lg"}
-                fontWeight={"600"}
-              >
-                Your Name
-              </Text>
-              <Input className="name" placeholder="Item Name" />
-            </Box> */}
-            <Box display={"flex"} gap={2} alignItems="center">
-              <Text
-                w={{ base: "40%", md: "30%", lg: "20%" }}
-                fontSize={"lg"}
-                fontWeight={"600"}
-              >
-                Role
-              </Text>
-              <Input
-                // type={"number"}
-                className="role"
-                placeholder="Eg. Farmer"
-              />
-            </Box>
             <Box display={"flex"} gap={2} alignItems="center">
               <Text
                 w={{ base: "40%", md: "30%", lg: "20%" }}
@@ -260,7 +221,12 @@ const ListItem = () => {
               >
                 Harvest Date
               </Text>
-              <Input className="harvest" placeholder="Date" />
+              <Input
+                type="Date"
+                max={minDate}
+                className="harvest"
+                placeholder="Date"
+              />
             </Box>
             <Box display={"flex"} gap={2} alignItems="center">
               <Text

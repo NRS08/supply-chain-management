@@ -46,6 +46,7 @@ export default function Login() {
       // setPassword("");
       localStorage.setItem("token", data.token);
       localStorage.setItem("scmName", data.user.name);
+      localStorage.setItem("scmRole", data.user.role);
       setTimeout(() => {
         const alert = document.querySelector(".alert");
         alert.style.display = "none";
