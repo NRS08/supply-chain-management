@@ -61,11 +61,13 @@ const BuyRequest = () => {
 
   const addItem = async () => {
     try {
+      setIsLoading(true);
       const prodID = document.querySelector(".ID").value;
       let Iname = document.querySelector(".Iname").value;
       const amount = parseInt(document.querySelector(".quantity").value);
       const price = parseInt(document.querySelector(".price").value);
       const buyerName = localStorage.getItem("scmName");
+      const contact = document.querySelector(".contact").value;
       const seller = document.querySelector(".seller").value;
 
       Iname = Iname.toUpperCase();
@@ -81,7 +83,6 @@ const BuyRequest = () => {
           if (data_product.productName === Iname) {
             if (Number(data_product.productQuantity) >= amount) {
               console.log("hi");
-              setIsLoading(true);
               const { data } = await axios.post(
                 urlReq,
                 {
@@ -90,6 +91,7 @@ const BuyRequest = () => {
                   amount,
                   price,
                   buyerName,
+                  contact,
                   seller,
                 },
                 {
@@ -108,6 +110,7 @@ const BuyRequest = () => {
               document.querySelector(".Iname").value = "";
               document.querySelector(".price").value = "";
               document.querySelector(".seller").value = "";
+              document.querySelector(".contact").value = "";
               setTimeout(() => {
                 const alert = document.querySelector(".alert");
                 alert.style.display = "none";
@@ -221,6 +224,16 @@ const BuyRequest = () => {
                 Price
               </Text>
               <Input type={"number"} className="price" placeholder="100000" />
+            </Box>
+            <Box display={"flex"} gap={2} alignItems="center">
+              <Text
+                w={{ base: "40%", md: "30%", lg: "20%" }}
+                fontSize={"lg"}
+                fontWeight={"600"}
+              >
+                Contact no.
+              </Text>
+              <Input className="contact" placeholder="Contact" />
             </Box>
             <Box display={"flex"} gap={2} alignItems="center">
               <Text

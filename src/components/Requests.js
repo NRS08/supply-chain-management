@@ -10,6 +10,7 @@ import {
   Badge,
   useColorModeValue,
   Input,
+  Spinner,
 } from "@chakra-ui/react";
 import Navbar2 from "./Navbar2";
 import { useEffect, useState } from "react";
@@ -27,6 +28,12 @@ export default function Requests() {
     "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/requests?accepted=";
   const urlWallet =
     "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/wallet";
+  const urlReject =
+    "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/delete/";
+  const urlUpdateListed =
+    "https://tiny-jade-marlin-belt.cyclic.app/api/v1/listing/update/";
+  const urlUpdateReq =
+    "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/update/";
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([false]);
@@ -36,11 +43,11 @@ export default function Requests() {
   const [wallet, setWallet] = useState("");
   const [map, setmap] = useState(null);
   const [lname, setLname] = useState(null);
+  // const [req, setReq] = useState("pending");
   const { account, setAccount, contract, setContract, provider, setProvider } =
     useGlobalContext();
 
   const name = localStorage.getItem("scmName");
-  console.log(name);
   useEffect(() => {
     if ("geolocation" in navigator) {
       // Get the current position
@@ -78,19 +85,74 @@ export default function Requests() {
     const hash = sha256(x);
     return hash;
   }
-  async function genPdf(_buyer) {
+  const updateListed = async (item) => {
+    const u = urlUpdateListed + item.prodID;
+    try {
+      const token = localStorage.getItem("token");
+      const { data } = await axios.patch(
+        u,
+        {
+          name: item.buyerName,
+          amount: item.amount,
+          contact: item.contact,
+          createdBy: item.buyer,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      alert(error);
+    }
+  };
+  const updateReq = async (item) => {
+    const u = urlUpdateReq + item._id;
+    try {
+      const token = localStorage.getItem("token");
+      const d = await axios.patch(
+        u,
+        {
+          accepted: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const cd = data.filter((i) => {
+        return i._id != item._id;
+      });
+      setData(cd);
+    } catch (error) {
+      alert(error);
+    }
+  };
+  async function genPdf(item) {
+    const cn = ".a" + item._id;
+    const load = document.querySelector(cn);
+    load.style.visibility = "visible";
     if (contract !== null) {
       if (account === wallet) {
         try {
-          let p_id, iName, quantity, price, buyerName;
+          let p_id, iName, quantity, price, buyerName, _buyer;
 
-          data.map((item) => {
-            p_id = item.prodID;
-            iName = item.Iname;
-            price = item.price;
-            quantity = item.amount;
-            buyerName = item.buyerName;
-          });
+          p_id = item.prodID;
+          iName = item.Iname;
+          price = item.price;
+          quantity = item.amount;
+          buyerName = item.buyerName;
+          _buyer = item.buyerAccount;
+
+          // data.map((item) => {
+          //   p_id = item.prodID;
+          //   iName = item.Iname;
+          //   price = item.price;
+          //   quantity = item.amount;
+          //   buyerName = item.buyerName;
+          // });
 
           const doc = new jsPDF();
 
@@ -188,6 +250,9 @@ export default function Requests() {
             );
             await tx.wait();
 
+            updateListed(item);
+            updateReq(item);
+
             doc.save(`Product_Reciept_${p_id}.pdf`);
           } else {
             alert("Invalid Buy Request");
@@ -212,18 +277,16 @@ export default function Requests() {
     } else {
       alert("Connect Wallet");
     }
+    load.style.visibility = "hidden";
   }
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log(token);
     if (!token) {
-      console.log("hey");
+      // console.log("hey");
       navigate("/login");
     } else {
-      console.log("hi");
       let u = url + "false";
-      console.log(u);
       getData(u);
     }
   }, []);
@@ -261,12 +324,30 @@ export default function Requests() {
     }
   };
 
+  const deleteReq = async (id) => {
+    const u = urlReject + id;
+    const cn = ".a" + id;
+    const load = document.querySelector(cn);
+    load.style.visibility = "visible";
+    try {
+      const token = localStorage.getItem("token");
+      const d = await axios.delete(u, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const cd = data.filter((item) => {
+        return item._id != id;
+      });
+      setData(cd);
+    } catch (error) {
+      alert(error);
+    }
+    load.style.visibility = "hidden";
+  };
+
   if (isLoading) {
-    return (
-      // <Stack h={"100vh"} w="100%" justify="center" align="center">
-      <Loader />
-      // </Stack>
-    );
+    return <Loader />;
   }
 
   return (
@@ -343,7 +424,22 @@ export default function Requests() {
                   md: "0 0 33.33%",
                   lg: "0 0 20%",
                 }}
+                position={"relative"}
               >
+                <Box
+                  className={"a" + item._id}
+                  position={"absolute"}
+                  height={"100%"}
+                  width={"100%"}
+                  backgroundColor={"#171923"}
+                  visibility={"hidden"}
+                  zIndex={"2"}
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Spinner />
+                </Box>
                 <Box
                   maxW={"320px"}
                   w={"full"}
@@ -365,28 +461,33 @@ export default function Requests() {
                   <Heading fontSize={"xl"} fontFamily={"body"}>
                     {`Buyer - ${item.buyerName}`}
                   </Heading>
+                  {heading === "Pending Requests" ? (
+                    <Stack mt={8} direction={"row"} spacing={4}>
+                      <Button
+                        flex={1}
+                        variant={"outline"}
+                        colorScheme="green"
+                        fontSize={"sm"}
+                        rounded={"full"}
+                        onClick={() => genPdf(item)}
+                      >
+                        {`Accept`}
+                      </Button>
 
-                  <Stack mt={8} direction={"row"} spacing={4}>
-                    <Button
-                      flex={1}
-                      variant={"outline"}
-                      colorScheme="green"
-                      fontSize={"sm"}
-                      rounded={"full"}
-                      onClick={() => genPdf(item.buyerAccount)}
-                    >
-                      {`Accept`}
-                    </Button>
-                    <Button
-                      flex={1}
-                      variant={"outline"}
-                      colorScheme="red"
-                      fontSize={"sm"}
-                      rounded={"full"}
-                    >
-                      {`Reject`}
-                    </Button>
-                  </Stack>
+                      <Button
+                        flex={1}
+                        variant={"outline"}
+                        colorScheme="red"
+                        fontSize={"sm"}
+                        rounded={"full"}
+                        onClick={() => deleteReq(item._id)}
+                      >
+                        {`Reject`}
+                      </Button>
+                    </Stack>
+                  ) : (
+                    <></>
+                  )}
                 </Box>
               </Box>
             );
