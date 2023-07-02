@@ -171,6 +171,9 @@ export default function Requests() {
             Number(data_product.productQuantity)
           );
 
+          iName = iName.toUpperCase();
+          console.log(iName);
+
           if (
             data_product.productName === iName &&
             Number(data_product.productQuantity) >= quantity
@@ -184,6 +187,7 @@ export default function Requests() {
               hash
             );
             await tx.wait();
+
             doc.save(`Product_Reciept_${p_id}.pdf`);
           } else {
             alert("Invalid Buy Request");

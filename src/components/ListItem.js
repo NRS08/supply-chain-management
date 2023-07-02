@@ -112,11 +112,14 @@ const ListItem = () => {
             setIsLoading(true);
             const name1 = localStorage.getItem("scmName");
             const role = document.querySelector(".role").value;
-            const Iname = document.querySelector(".Iname").value;
+            let Iname = document.querySelector(".Iname").value;
             const harvestDate = document.querySelector(".harvest").value;
             const amount = parseInt(document.querySelector(".amount").value);
             const contact = document.querySelector(".contact").value;
             //   console.log(name, role, Iname, harvest, amount, contact);
+
+            Iname = Iname.toUpperCase();
+            console.log(Iname);
 
             const tx = await contract.assignProduct(Iname, amount);
             await tx.wait();
