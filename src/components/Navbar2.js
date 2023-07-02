@@ -195,7 +195,9 @@ export default function Navbar2() {
                 <MenuItem closeOnSelect={false} onClick={getId}>
                   {isLoading ? "Loading..." : "Your Id"}
                 </MenuItem>
-                <MenuItem>Settings</MenuItem>
+                <MenuItem onClick={() => navigate("/yourItems")}>
+                  Your Listed Items
+                </MenuItem>
                 <MenuDivider />
                 <MenuItem onClick={signOut}>Sign Out</MenuItem>
               </MenuList>
