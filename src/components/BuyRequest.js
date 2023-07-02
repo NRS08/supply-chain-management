@@ -35,6 +35,7 @@ import {
   AlertIcon,
   useColorMode,
 } from "@chakra-ui/react";
+import LensTwoTone from "@mui/icons-material/LensTwoTone";
 
 const BuyRequest = () => {
   const urlReq =
@@ -47,6 +48,8 @@ const BuyRequest = () => {
   const [message, setMessage] = useState("Message");
   const [status, setStatus] = useState("error");
   const { colorMode } = useColorMode();
+  const { account, setAccount, contract, setContract, provider, setProvider } =
+    useGlobalContext();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -58,44 +61,69 @@ const BuyRequest = () => {
 
   const addItem = async () => {
     try {
-      setIsLoading(true);
       const prodID = document.querySelector(".ID").value;
-      const Iname = document.querySelector(".Iname").value;
+      let Iname = document.querySelector(".Iname").value;
       const amount = parseInt(document.querySelector(".quantity").value);
       const price = parseInt(document.querySelector(".price").value);
       const buyerName = localStorage.getItem("scmName");
       const seller = document.querySelector(".seller").value;
 
-      const { data } = await axios.post(
-        urlReq,
-        {
-          prodID,
-          Iname,
-          amount,
-          price,
-          buyerName,
-          seller,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      Iname = Iname.toUpperCase();
+
+      if (contract !== null) {
+        const data_product = await contract.IdTOProduct(prodID);
+
+        console.log(
+          data_product.productName,
+          Number(data_product.productQuantity)
+        );
+        if (Number(data_product.productQuantity) !== 0) {
+          if (data_product.productName === Iname) {
+            if (Number(data_product.productQuantity) >= amount) {
+              console.log("hi");
+              setIsLoading(true);
+              const { data } = await axios.post(
+                urlReq,
+                {
+                  prodID,
+                  Iname,
+                  amount,
+                  price,
+                  buyerName,
+                  seller,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              setStatus("success");
+              setMessage("Resquest sent");
+              const alert = document.querySelector(".alert");
+              alert.style.display = "flex";
+              setIsLoading(false);
+              document.querySelector(".ID").value = "";
+              document.querySelector(".quantity").value = "";
+              document.querySelector(".Iname").value = "";
+              document.querySelector(".price").value = "";
+              document.querySelector(".seller").value = "";
+              setTimeout(() => {
+                const alert = document.querySelector(".alert");
+                alert.style.display = "none";
+              }, 2500);
+            } else {
+              alert("Amount should be less than Seller's given amount ");
+            }
+          } else {
+            alert("Invaild Product Name");
+          }
+        } else {
+          alert("Product Id doesn't exist");
         }
-      );
-      setStatus("success");
-      setMessage("Resquest sent");
-      const alert = document.querySelector(".alert");
-      alert.style.display = "flex";
-      setIsLoading(false);
-      document.querySelector(".ID").value = "";
-      document.querySelector(".quantity").value = "";
-      document.querySelector(".Iname").value = "";
-      document.querySelector(".price").value = "";
-      document.querySelector(".seller").value = "";
-      setTimeout(() => {
-        const alert = document.querySelector(".alert");
-        alert.style.display = "none";
-      }, 2500);
+      } else {
+        alert("Connect Wallet");
+      }
     } catch (error) {
       setStatus("error");
       setMessage(error.response.data.msg);
