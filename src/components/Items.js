@@ -60,11 +60,7 @@ export default function Items() {
   };
 
   if (isLoading) {
-    return (
-      // <Flex h={"100vh"} w="100%" justify="center" align="center">
-      <Loader />
-      // </Flex>
-    );
+    return <Loader />;
   }
 
   return (
@@ -120,11 +116,16 @@ export default function Items() {
                     p={6}
                     textAlign={"center"}
                   >
-                    <Heading fontSize={"2xl"} fontFamily={"body"}>
-                      {`ID - ${item.prodID}`}
+                    <Heading
+                      textAlign={"start"}
+                      fontSize={"2xl"}
+                      fontFamily={"body"}
+                      color={"whiteAlpha.700"}
+                    >
+                      <Box>{`ID : ${item.prodID}`}</Box>
                     </Heading>
-                    <Heading fontSize={"2xl"} fontFamily={"body"}>
-                      {`Item - ${item.Iname}`}
+                    <Heading fontSize={"2xl"} mt={4} fontFamily={"body"}>
+                      {`${item.Iname}`}
                     </Heading>
                     <Text fontWeight={600} color={"gray.500"} mb={2}>
                       {`${item.amount} Kg`}

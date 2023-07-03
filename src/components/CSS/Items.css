@@ -6,6 +6,11 @@
   grid-auto-rows: 1fr;
 }
 
+.item {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
 @media only screen and (min-width: 768px) {
   .items {
     grid-template-columns: repeat(2, minmax(0, 1fr));
