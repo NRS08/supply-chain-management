@@ -252,10 +252,11 @@ export default function Requests() {
               location,
               hash
             );
-            await tx.wait();
+            const txReciept = await tx.wait();
 
             updateListed(item);
             updateReq(item);
+            showCustomDialog(txReciept);
 
             doc.save(`Product_Reciept_${p_id}.pdf`);
           } else {
@@ -282,6 +283,16 @@ export default function Requests() {
       alert("Connect Wallet");
     }
     load.style.visibility = "hidden";
+  }
+
+  function showCustomDialog(txReciept) {
+    const message = "Transaction Hash: " + txReciept.transactionHash;
+    const websiteUrl = `https://sepolia.etherscan.io/tx/${txReciept.transactionHash}`;
+
+    const result = window.confirm(message);
+    if (result) {
+      window.open(websiteUrl, "_blank");
+    }
   }
 
   useEffect(() => {

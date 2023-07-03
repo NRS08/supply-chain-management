@@ -121,12 +121,9 @@ const ListItem = () => {
             console.log(Iname);
             const tx = await contract.assignProduct(Iname, amount);
             await tx.wait();
-            contract.once("ProductAssign", (id, name, quantity) => {
-              add(Number(id), name1, role, Iname, harvestDate, amount, contact);
-              window.alert(
-                `${id} assign to product ${name} having ${quantity} kg amount`
-              );
-            });
+            const id = await contract.deriveLastId();
+            console.log(Number(id));
+            add(Number(id), name1, role, Iname, harvestDate, amount, contact);
           } catch (error) {
             if (error.code === 4001) {
               // User rejected the transaction
