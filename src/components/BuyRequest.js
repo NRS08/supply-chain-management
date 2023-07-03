@@ -116,15 +116,19 @@ const BuyRequest = () => {
                 alert.style.display = "none";
               }, 2500);
             } else {
+              setIsLoading(false);
               alert("Amount should be less than Seller's given amount ");
             }
           } else {
+            setIsLoading(false);
             alert("Invaild Product Name");
           }
         } else {
+          setIsLoading(false);
           alert("Product Id doesn't exist");
         }
       } else {
+        setIsLoading(false);
         alert("Connect Wallet");
       }
     } catch (error) {

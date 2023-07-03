@@ -76,7 +76,7 @@ export default function Navbar2() {
         const signer = provider.getSigner();
         const address = await signer.getAddress();
         setAccount(address);
-        let contractAddress = "0x8D3F6117938FC8a14A8f1ee1AdA243Ab82b2c328";
+        let contractAddress = "0x54e6b4cf490695FEcdBd5206D007Ba352E5C35B6";
         const contract = new ethers.Contract(contractAddress, SCM.abi, signer);
 
         setContract(contract);
