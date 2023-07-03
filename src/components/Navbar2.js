@@ -41,11 +41,14 @@ export default function Navbar2() {
   const navigate = useNavigate();
   const { isOpen, onToggle } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     const n = localStorage.getItem("scmName");
+    const r = localStorage.getItem("scmRole");
     if (n) {
       setName(n);
+      setRole(r);
     } else {
       navigate("/login");
     }
@@ -188,8 +191,17 @@ export default function Navbar2() {
                 rightIcon={<ChevronDownIcon />}
                 textTransform="capitalize"
                 p={1}
+                position="relative"
               >
                 {name}
+                <Text
+                  color={"gray.400"}
+                  fontSize={"x-small"}
+                  bottom={"0"}
+                  position={"absolute"}
+                >
+                  {role}
+                </Text>
               </MenuButton>
               <MenuList>
                 <MenuItem closeOnSelect={false} onClick={getId}>
