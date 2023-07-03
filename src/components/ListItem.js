@@ -82,7 +82,6 @@ const ListItem = () => {
       const alert = document.querySelector(".alert");
       alert.style.display = "flex";
       setIsLoading(false);
-      document.querySelector(".role").value = "";
       document.querySelector(".Iname").value = "";
       document.querySelector(".harvest").value = "";
       document.querySelector(".amount").value = "";
@@ -92,6 +91,7 @@ const ListItem = () => {
         alert.style.display = "none";
       }, 500);
     } catch (error) {
+      console.log(error);
       setStatus("error");
       setMessage(error.response.data.msg);
       setIsLoading(false);
