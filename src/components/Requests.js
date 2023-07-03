@@ -34,6 +34,10 @@ export default function Requests() {
     "https://tiny-jade-marlin-belt.cyclic.app/api/v1/listing/update/";
   const urlUpdateReq =
     "https://tiny-jade-marlin-belt.cyclic.app/api/v1/buying/update/";
+  let INDRupees = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "INR",
+  });
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([false]);
@@ -458,7 +462,7 @@ export default function Requests() {
                       {`${item.amount} Kg`}
                     </Text>
                     <Text fontWeight={600} color={"gray.500"} mb={2}>
-                      {`${item.price} Rupees`}
+                      {`${INDRupees.format(item.price)}`}
                     </Text>
                     <Heading fontSize={"xl"} fontFamily={"body"}>
                       {`Buyer - ${item.buyerName}`}
