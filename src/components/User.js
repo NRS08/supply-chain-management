@@ -53,6 +53,10 @@ const User = () => {
       if (error.message.includes("Invalid product ID")) {
         alert("Product ID doesn't exist");
       }
+
+      if (error.message.includes("Product not Sell")) {
+        alert("Product has not been sold");
+      }
     }
   }
   return (
