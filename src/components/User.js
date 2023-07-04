@@ -45,11 +45,14 @@ const User = () => {
   }, []);
 
   const provider = new ethers.providers.JsonRpcProvider(
-    process.env.REACT_APP_RPC_URL
+    "https://eth-sepolia.g.alchemy.com/v2/-4e5fsDjluNgzUNf9u0nNElwVvNV2QYq"
   );
-  const wallet = new ethers.Wallet(process.env.REACT_APP_PRIVATE_KEY, provider);
+  const wallet = new ethers.Wallet(
+    "9950025c546ede2c2bb22c6dd3b984efe4f7622c4e22eb26f7facffad32e099b",
+    provider
+  );
   const contract = new ethers.Contract(
-    process.env.REACT_APP_CONTRACT_ADDRESS,
+    "0x1c5B49192bd5bB09634f9CCb5fDF40F2261c11c9",
     SCM.abi,
     wallet
   );
