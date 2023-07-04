@@ -70,7 +70,7 @@ const User = () => {
       try {
         const { data } = await axios.get(nominatimApiUrl);
         const name =
-          data.address.city +
+          data.address.state_district +
           ", " +
           data.address.state +
           ", " +
