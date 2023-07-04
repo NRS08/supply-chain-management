@@ -63,24 +63,25 @@ const Home = () => {
 
   const getLocationName = async (array) => {
     let locationNames = [];
-
-    await array.map(async (location) => {
-      const arr = location.split(",");
-      const nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${arr[0]}&lon=${arr[1]}&format=json`;
-      try {
-        const { data } = await axios.get(nominatimApiUrl);
-        const name =
-          data.address.state_district +
-          ", " +
-          data.address.state +
-          ", " +
-          data.address.country;
-        locationNames.push(name);
-        setLocations(locationNames);
-      } catch (error) {
-        alert(error);
-      }
-    });
+    await Promise.all(
+      array.map(async (location) => {
+        const arr = location.split(",");
+        const nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${arr[0]}&lon=${arr[1]}&format=json`;
+        try {
+          const { data } = await axios.get(nominatimApiUrl);
+          const name =
+            data.address.state_district +
+            ", " +
+            data.address.state +
+            ", " +
+            data.address.country;
+          locationNames.push(name);
+        } catch (error) {
+          alert(error);
+        }
+      })
+    );
+    setLocations(locationNames);
   };
 
   async function fetch() {

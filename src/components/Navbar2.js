@@ -148,6 +148,8 @@ export default function Navbar2() {
             color={useColorModeValue("gray.800", "#e5c453")}
             fontWeight={"600"}
             letterSpacing={"1px"}
+            onClick={() => navigate("/")}
+            cursor={"pointer"}
           >
             SCM
           </Text>

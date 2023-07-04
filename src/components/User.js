@@ -61,26 +61,31 @@ const User = () => {
     setid(e.target.value);
   }
 
+  // useEffect(() => {
+  //   setLocations(locationNames);
+  // }, [locationNames]);
+
   const getLocationName = async (array) => {
     let locationNames = [];
-
-    await array.map(async (location) => {
-      const arr = location.split(",");
-      const nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${arr[0]}&lon=${arr[1]}&format=json`;
-      try {
-        const { data } = await axios.get(nominatimApiUrl);
-        const name =
-          data.address.state_district +
-          ", " +
-          data.address.state +
-          ", " +
-          data.address.country;
-        locationNames.push(name);
-        setLocations(locationNames);
-      } catch (error) {
-        alert(error);
-      }
-    });
+    await Promise.all(
+      array.map(async (location) => {
+        const arr = location.split(",");
+        const nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${arr[0]}&lon=${arr[1]}&format=json`;
+        try {
+          const { data } = await axios.get(nominatimApiUrl);
+          const name =
+            data.address.state_district +
+            ", " +
+            data.address.state +
+            ", " +
+            data.address.country;
+          locationNames.push(name);
+        } catch (error) {
+          alert(error);
+        }
+      })
+    );
+    setLocations(locationNames);
   };
 
   async function fetch() {
@@ -93,15 +98,6 @@ const User = () => {
       setLocations(product.productLocation);
       getLocationName(product.productLocation);
       setProduct(product);
-      // console.log(
-      //   Number(product.productID),
-      //   product.productName,
-      //   Number(product.productQuantity),
-      //   product.productPrice,
-      //   product.productLocation,
-      //   Number(product.productTimestamp),
-      //   product.productOwner
-      // );
       table.style.display = "flex";
       setIsLoading(false);
     } catch (error) {
@@ -113,6 +109,9 @@ const User = () => {
       if (error.message.includes("Product not Sell")) {
         setIsLoading(false);
         alert("Product has not been sold");
+      } else {
+        setIsLoading(false);
+        alert(error);
       }
     }
   }
