@@ -1,3 +1,4 @@
+// require("dotenv").config();
 import React from "react";
 import { useEffect, useState } from "react";
 import "./CSS/Home.css";
