@@ -76,7 +76,7 @@ export default function Navbar2() {
         const signer = provider.getSigner();
         const address = await signer.getAddress();
         setAccount(address);
-        let contractAddress = "0x54e6b4cf490695FEcdBd5206D007Ba352E5C35B6";
+        let contractAddress = "0x1c5B49192bd5bB09634f9CCb5fDF40F2261c11c9";
         const contract = new ethers.Contract(contractAddress, SCM.abi, signer);
 
         setContract(contract);
@@ -178,7 +178,7 @@ export default function Navbar2() {
                 "Connected"
               )
             ) : (
-              <a href="https://metamask.app.link/dapp/supply-chain-management-hwgf58pvq-nrs08.vercel.app/">
+              <a href="https://metamask.app.link/dapp/supply-chain-management-l0j5ryepd-nrs08.vercel.app/">
                 Connect
               </a>
             )}

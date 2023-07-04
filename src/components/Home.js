@@ -50,7 +50,7 @@ const Home = () => {
     provider
   );
   const contract = new ethers.Contract(
-    "0x54e6b4cf490695FEcdBd5206D007Ba352E5C35B6",
+    "0x1c5B49192bd5bB09634f9CCb5fDF40F2261c11c9",
     SCM.abi,
     wallet
   );
@@ -77,6 +77,10 @@ const Home = () => {
     } catch (error) {
       if (error.message.includes("Invalid product ID")) {
         alert("Product ID doesn't exist");
+      }
+
+      if (error.message.includes("Product not Sell")) {
+        alert("Product has not been sold");
       }
     }
   }
