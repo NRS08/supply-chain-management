@@ -178,7 +178,7 @@ export default function Navbar2() {
                 "Connected"
               )
             ) : (
-              <a href="https://metamask.app.link/dapp/supply-chain-management-hwgf58pvq-nrs08.vercel.app/">
+              <a href="https://metamask.app.link/dapp/supply-chain-management-l0j5ryepd-nrs08.vercel.app/">
                 Connect
               </a>
             )}
