@@ -151,9 +151,10 @@ const Home = () => {
         <div className="itemInfo">
           <TableContainer
             w={"auto"}
-            border={"1px solid grey"}
+            border={"2px solid grey"}
             borderRadius={"1rem"}
             p={4}
+            bg={"#010409"}
           >
             <Box
               display={"flex"}
