@@ -64,8 +64,8 @@ export default function Requests() {
         setmap(mapUrl);
 
         // Do something with the latitude and longitude values
-        console.log("Latitude: " + latitude);
-        console.log("Longitude: " + longitude);
+        // console.log("Latitude: " + latitude);
+        // console.log("Longitude: " + longitude);
 
         const nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
 

@@ -13,12 +13,16 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Spinner,
+  Text,
+  Box,
 } from "@chakra-ui/react";
 import SearchIcon from "@mui/icons-material/Search";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
 import SCM from "../artifacts/contracts/SupplyChain.sol/SupplyChain.json";
+import axios from "axios";
 
 const Home = () => {
   let INDRupees = new Intl.NumberFormat("en-US", {
@@ -27,6 +31,10 @@ const Home = () => {
   });
   const navigate = useNavigate();
   const [id, setid] = useState(null);
+  const [prices, setPrices] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [product, setProduct] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -35,22 +43,12 @@ const Home = () => {
     }
   }, []);
 
-  const prices = [1000, 99999, 1000199];
-  const locations = [
-    "Arvi, Wardha, Maharashtra, 442200, India",
-    "Mumbai",
-    "Delhi",
-  ];
-
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://eth-sepolia.g.alchemy.com/v2/-4e5fsDjluNgzUNf9u0nNElwVvNV2QYq"
+    process.env.REACT_APP_RPC_URL
   );
-  const wallet = new ethers.Wallet(
-    "9950025c546ede2c2bb22c6dd3b984efe4f7622c4e22eb26f7facffad32e099b",
-    provider
-  );
+  const wallet = new ethers.Wallet(process.env.REACT_APP_PRIVATE_KEY, provider);
   const contract = new ethers.Contract(
-    "0x1c5B49192bd5bB09634f9CCb5fDF40F2261c11c9",
+    process.env.REACT_APP_CONTRACT_ADDRESS,
     SCM.abi,
     wallet
   );
@@ -59,27 +57,57 @@ const Home = () => {
     setid(e.target.value);
   }
 
+  const getLocationName = async (array) => {
+    let locationNames = [];
+
+    await array.map(async (location) => {
+      const arr = location.split(",");
+      const nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${arr[0]}&lon=${arr[1]}&format=json`;
+      try {
+        const { data } = await axios.get(nominatimApiUrl);
+        const name =
+          data.address.city +
+          ", " +
+          data.address.state +
+          ", " +
+          data.address.country;
+        locationNames.push(name);
+        setLocations(locationNames);
+      } catch (error) {
+        alert(error);
+      }
+    });
+  };
+
   async function fetch() {
     const table = document.querySelector(".itemInfo");
     table.style.display = "none";
+    setIsLoading(true);
     try {
       const product = await contract.getProductDetails(id);
-      console.log(
-        Number(product.productID),
-        product.productName,
-        Number(product.productQuantity),
-        product.productPrice,
-        product.productLocation,
-        Number(product.productTimestamp),
-        product.productOwner
-      );
+      setPrices(product.productPrice);
+      setLocations(product.productLocation);
+      getLocationName(product.productLocation);
+      setProduct(product);
+      // console.log(
+      //   Number(product.productID),
+      //   product.productName,
+      //   Number(product.productQuantity),
+      //   product.productPrice,
+      //   product.productLocation,
+      //   Number(product.productTimestamp),
+      //   product.productOwner
+      // );
       table.style.display = "flex";
+      setIsLoading(false);
     } catch (error) {
       if (error.message.includes("Invalid product ID")) {
+        setIsLoading(false);
         alert("Product ID doesn't exist");
       }
 
       if (error.message.includes("Product not Sell")) {
+        setIsLoading(false);
         alert("Product has not been sold");
       }
     }
@@ -102,9 +130,22 @@ const Home = () => {
               placeholder="Enter Product ID"
               onChange={HandleInputChange}
             />
-            <Button onClick={fetch} colorScheme="teal" variant="solid">
-              <SearchIcon />
-            </Button>
+
+            {isLoading ? (
+              <Button
+                isLoading
+                colorScheme="teal"
+                variant="outline"
+                spinnerPlacement="start"
+                p={0}
+              >
+                Submit
+              </Button>
+            ) : (
+              <Button onClick={fetch} colorScheme="teal" variant="solid">
+                <SearchIcon />
+              </Button>
+            )}
           </div>
         </div>
         <div className="itemInfo">
@@ -114,18 +155,31 @@ const Home = () => {
             borderRadius={"1rem"}
             p={4}
           >
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              alignItems={"start"}
+              alignContent={"start"}
+              mb={2}
+            >
+              <Text>{`ID : ${Number(product.productID)}`}</Text>
+              <Text
+                textTransform={"capitalize"}
+              >{`Name : ${product.productName}`}</Text>
+              <Text>{`Quantity : ${product.productQuantity} Kg`}</Text>
+            </Box>
             <Table variant="simple">
-              <TableCaption>Imperial to metric conversion factors</TableCaption>
+              <TableCaption>Item History</TableCaption>
               <Thead>
                 <Tr>
                   <Th>Prices</Th>
-                  <Th>Location</Th>
+                  <Th>Locations</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {prices.map((price, index) => {
                   return (
-                    <Tr>
+                    <Tr key={price}>
                       <Td>{INDRupees.format(price)}</Td>
                       <Td>{locations[index]}</Td>
                     </Tr>
