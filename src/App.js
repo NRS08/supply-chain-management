@@ -25,7 +25,7 @@ function App() {
           <Route path="/items" element={<Items />} />
           <Route path="/buyRequest" element={<BuyRequest />} />
           <Route path="/requests" element={<Requests />} />
-          <Route path="/1" element={<MyPDF />} />
+          <Route path="/checkReceipt" element={<MyPDF />} />
           <Route path="/yourItems" element={<YourItems />} />
         </Routes>
       </div>

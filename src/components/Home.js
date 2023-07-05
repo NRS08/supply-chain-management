@@ -17,6 +17,7 @@ import {
   Spinner,
   Text,
   Box,
+  Link,
 } from "@chakra-ui/react";
 import SearchIcon from "@mui/icons-material/Search";
 import Navbar from "./Navbar";
@@ -36,6 +37,8 @@ const Home = () => {
   const [locations, setLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState([]);
+  const [quantity, setQuantity] = useState([]);
+  const [time, setTime] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -91,7 +94,8 @@ const Home = () => {
     try {
       const product = await contract.getProductDetails(id);
       const productQuant = await contract.getproductQuant(id);
-      console.log(productQuant);
+      setTime(product.productTimestamp);
+      setQuantity(productQuant);
       setPrices(product.productPrice);
       setLocations(product.productLocation);
       getLocationName(product.productLocation);
@@ -154,6 +158,13 @@ const Home = () => {
               </Button>
             )}
           </div>
+          <Text>
+            Have a transaction reciept{" "}
+            <Link color="teal.500" onClick={() => navigate("/checkReceipt")}>
+              Click Here
+            </Link>{" "}
+            to check if its original
+          </Text>
         </div>
         <div className="itemInfo">
           <TableContainer
@@ -174,7 +185,6 @@ const Home = () => {
               <Text
                 textTransform={"capitalize"}
               >{`Name : ${product.productName}`}</Text>
-              <Text>{`Quantity : ${product.productQuantity} Kg`}</Text>
             </Box>
             <Table variant="simple">
               <TableCaption>Item History</TableCaption>
@@ -182,14 +192,25 @@ const Home = () => {
                 <Tr>
                   <Th>Prices</Th>
                   <Th>Locations</Th>
+                  <Th>Time</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {prices.map((price, index) => {
+                  const d = new Date(
+                    Number(time[index]) * 1000
+                  ).toLocaleString();
+
                   return (
                     <Tr key={price}>
-                      <Td>{INDRupees.format(price)}</Td>
+                      <Td>
+                        {INDRupees.format(price) +
+                          " (" +
+                          quantity[index + 1] +
+                          " kg)"}
+                      </Td>
                       <Td>{locations[index]}</Td>
+                      <Td>{d}</Td>
                     </Tr>
                   );
                 })}

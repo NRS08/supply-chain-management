@@ -3,11 +3,15 @@ import { jsPDF } from "jspdf";
 import { sha256 } from "js-sha256";
 import { ethers } from "ethers";
 import Navbar from "./Navbar";
+import Navbar2 from "./Navbar2";
 import SCM from "../artifacts/contracts/SupplyChain.sol/SupplyChain.json";
-
+import { Input, Box, Button, Text, Alert, AlertIcon } from "@chakra-ui/react";
 const MyPDF = () => {
   const pdfRef = useRef(null);
   const [pdf, setpdf] = useState(null);
+  const token = localStorage.getItem("token");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("error");
 
   const provider = new ethers.providers.JsonRpcProvider(
     "https://eth-sepolia.g.alchemy.com/v2/-4e5fsDjluNgzUNf9u0nNElwVvNV2QYq"
@@ -39,24 +43,79 @@ const MyPDF = () => {
     }
   };
 
-  console.log(pdf);
   async function check() {
-    const hashcheck = await contract.pdfHash(pdf);
-    if (hashcheck) {
-      console.log("Success");
+    if (pdf) {
+      const hashcheck = await contract.pdfHash(pdf);
+      if (hashcheck) {
+        setStatus("success");
+        setMessage("Receipt is original");
+        const alert = document.querySelector(".alert");
+        alert.style.display = "flex";
+        setTimeout(() => {
+          const alert = document.querySelector(".alert");
+          alert.style.display = "none";
+        }, 3000);
+      } else {
+        setStatus("error");
+        setMessage("Receipt is not original");
+        const alert = document.querySelector(".alert");
+        alert.style.display = "flex";
+        setTimeout(() => {
+          const alert = document.querySelector(".alert");
+          alert.style.display = "none";
+        }, 3000);
+      }
     } else {
-      console.log("Fail");
+      setStatus("error");
+      setMessage("Upload a pdf");
+      const alert = document.querySelector(".alert");
+      alert.style.display = "flex";
+      setTimeout(() => {
+        const alert = document.querySelector(".alert");
+        alert.style.display = "none";
+      }, 1000);
     }
   }
 
   return (
     <>
-      <Navbar />
-      <div>
-        <input type="file" accept=".pdf" onChange={handlePDFInputChange} />
-      </div>
+      {token ? <Navbar2 /> : <Navbar />}
+      <Box
+        height={"90vh"}
+        display={"flex"}
+        justifyContent={"flex-start"}
+        alignItems={"center"}
+        flexDirection={"column"}
+      >
+        <Alert
+          className="alert"
+          variant={"solid"}
+          status={status}
+          position={"absolute"}
+          w={"auto"}
+          top="20px"
+          display={"none"}
+          justifyContent="center"
+        >
+          <AlertIcon />
+          {message}
+        </Alert>
+        <Text mt={4} fontWeight={"600"} fontSize={"2xl"}>
+          Upload the Receipt
+        </Text>
 
-      <button onClick={check}>Upload</button>
+        <Input
+          mt={8}
+          width={"auto"}
+          border={"none"}
+          type="file"
+          accept=".pdf"
+          onChange={handlePDFInputChange}
+        />
+        <Button variant={"solid"} colorScheme="red" onClick={check}>
+          Upload
+        </Button>
+      </Box>
     </>
   );
 };
