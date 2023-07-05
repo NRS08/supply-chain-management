@@ -86,6 +86,7 @@ const MyPDF = () => {
         justifyContent={"flex-start"}
         alignItems={"center"}
         flexDirection={"column"}
+        color="white"
       >
         <Alert
           className="alert"
