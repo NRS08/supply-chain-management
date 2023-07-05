@@ -52,7 +52,7 @@ const Home = () => {
     provider
   );
   const contract = new ethers.Contract(
-    "0x1c5B49192bd5bB09634f9CCb5fDF40F2261c11c9",
+    "0x57A858B4C90f3A4179CC1A999278B64Aa5ddc961",
     SCM.abi,
     wallet
   );
@@ -90,6 +90,8 @@ const Home = () => {
     setIsLoading(true);
     try {
       const product = await contract.getProductDetails(id);
+      const productQuant = await contract.getproductQuant(id);
+      console.log(productQuant);
       setPrices(product.productPrice);
       setLocations(product.productLocation);
       getLocationName(product.productLocation);

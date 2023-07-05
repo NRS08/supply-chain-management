@@ -17,7 +17,7 @@ const MyPDF = () => {
     provider
   );
   const contract = new ethers.Contract(
-    "0x1c5B49192bd5bB09634f9CCb5fDF40F2261c11c9",
+    "0x57A858B4C90f3A4179CC1A999278B64Aa5ddc961",
     SCM.abi,
     wallet
   );

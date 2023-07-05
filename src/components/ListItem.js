@@ -231,7 +231,7 @@ const ListItem = () => {
                 fontSize={"lg"}
                 fontWeight={"600"}
               >
-                Amount
+                Amount (in kg's)
               </Text>
               <Input type="number" className="amount" placeholder="amount" />
             </Box>
