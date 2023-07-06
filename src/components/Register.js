@@ -43,10 +43,10 @@ export default function Register() {
   const isAndroid = /android/i.test(navigator.userAgent);
   // console.log(isAndroid);
   async function ButtonClick() {
-    console.log("window.ethereum:", window.ethereum);
+    // console.log("window.ethereum:", window.ethereum);
     if (typeof window.ethereum !== "undefined") {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log("provider:", provider);
+      // console.log("provider:", provider);
       const loadProvider = async () => {
         window.ethereum.on("chainChanged", () => {
           window.location.reload();
@@ -64,13 +64,13 @@ export default function Register() {
 
         setContract(contract);
         setProvider(provider);
-        console.log(typeof contract);
+        // console.log(typeof contract);
       };
       provider && loadProvider();
     } else {
       if (!isAndroid) alert("Install Metamask");
     }
-    console.log(account);
+    // console.log(account);
   }
 
   const register = async () => {
