@@ -75,14 +75,13 @@ const BuyRequest = () => {
       if (contract !== null) {
         const data_product = await contract.IdTOProduct(prodID);
 
-        console.log(
-          data_product.productName,
-          Number(data_product.productQuantity)
-        );
+        // console.log(
+        //   data_product.productName,
+        //   Number(data_product.productQuantity)
+        // );
         if (Number(data_product.productQuantity) !== 0) {
           if (data_product.productName === Iname) {
             if (Number(data_product.productQuantity) >= amount) {
-              console.log("hi");
               const { data } = await axios.post(
                 urlReq,
                 {

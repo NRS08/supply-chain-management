@@ -118,22 +118,23 @@ const ListItem = () => {
             const contact = document.querySelector(".contact").value;
             //   console.log(name, role, Iname, harvest, amount, contact);
             Iname = Iname.toUpperCase();
-            console.log(Iname);
+            // console.log(Iname);
             const tx = await contract.assignProduct(Iname, amount);
             await tx.wait();
             const id = await contract.deriveLastId();
-            console.log(Number(id));
+            // console.log(Number(id));
             add(Number(id), name1, role, Iname, harvestDate, amount, contact);
           } catch (error) {
+            setIsLoading(false);
             if (error.code === 4001) {
               // User rejected the transaction
-              console.log("Transaction rejected by the user");
+              window.alert("Transaction rejected by the user");
             } else if (error.code === -32002) {
               // Insufficient funds
-              console.log("Insufficient funds for the transaction");
+              window.alert("Insufficient funds for the transaction");
             } else {
               // Handle other error conditions
-              console.log("Error while selling product:", error.message);
+              window.alert("Error while selling product:", error.message);
             }
           }
         } else {

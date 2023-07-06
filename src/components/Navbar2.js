@@ -60,10 +60,10 @@ export default function Navbar2() {
   var isAndroid = userAgent.indexOf("android") > -1;
   // console.log(isAndroid);
   async function ButtonClick() {
-    console.log("window.ethereum:", window.ethereum);
+    // console.log("window.ethereum:", window.ethereum);
     if (typeof window.ethereum !== "undefined") {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log("provider:", provider);
+      // console.log("provider:", provider);
       const loadProvider = async () => {
         window.ethereum.on("chainChanged", () => {
           window.location.reload();
@@ -81,7 +81,7 @@ export default function Navbar2() {
 
         setContract(contract);
         setProvider(provider);
-        console.log(typeof contract);
+        // console.log(typeof contract);
       };
       provider && loadProvider();
     } else {
