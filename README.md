@@ -1,70 +1,74 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# SCM Dapp
 
-## Available Scripts
+This is a Decentralized Application that stores the history of goods from the producers to manufacturer, with all the information about the price history,locations and time stamps.
 
-In the project directory, you can run:
+[![Product Name Screen Shot][product-screenshot]](https://supply-chain-management-nrs08.vercel.app/)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+[product-screenshot]: https://i.ibb.co/kSWfWqV/Screenshot-2023-07-10-040107.png
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## Flow of Dapp
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+* You have the option to create a detailed listing for an item on the portal, providing all the necessary information and specifications.
+- Any individual can initiate a buy request for the product you have listed.
+- As the seller, you can accept or reject the buy request based on your discretion and business requirements.
+- A comprehensive product receipt is automatically generated once you accept a buy request. This receipt encompasses all the essential details related to the transaction, including the purchase date, price, and buyer information.
+- By utilizing the unique product ID associated with each item, you can easily access and retrieve extensive information about the product.
+- Furthermore, the system provides a mechanism to validate the authenticity of the generated receipt. You can verify whether the receipt is original and legitimate, safeguarding against any potential fraudulent activities.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Run Locally
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Clone the project
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+  git clone https://github.com/NRS08/supply-chain-management.git
+```
 
-### `npm run eject`
+Go to the project directory
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+  cd supply-chain-management
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Install dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+  npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Start the server
 
-## Learn More
+```bash
+  npm run start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Built With
 
-### Code Splitting
+* [![React][React.js]][React-url]
+* [![Node][Node.js]][Node-url]
+* [![Express][express.js]][express-url]
+* [![MongoDB][mongoDB]][mongo-url]
+* [![Solidity][solidity]][solidity-url]
+* [![Ethereum][ethereum]][solidity-url]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Node.js]: https://img.shields.io/badge/node-20232A?style=for-the-badge&logo=node.js&logoColor=339933
+[Node-url]: https://nodejs.org/en
+[express.js]: https://img.shields.io/badge/express-20232A?style=for-the-badge&logo=express&logoColor=ffffff
+[express-url]: https://expressjs.com/
+[mongoDB]: https://img.shields.io/badge/mongoDB-20232A?style=for-the-badge&logo=mongoDB&logoColor=47A248
+[mongo-url]: https://www.mongodb.com/
+[solidity]: https://img.shields.io/badge/solidity-20232A?style=for-the-badge&logo=solidity&logoColor=ffffff
+[solidity-url]: https://soliditylang.org/
+[ethereum]: https://img.shields.io/badge/etherjs-20232A?style=for-the-badge&logo=ethereum&logoColor=ffffff
+[ethereum-url]: https://ethereum.org/en/
+## Authors
 
-### Analyzing the Bundle Size
+- [@NRS08](https://github.com/NRS08)
+- [@kanakjaiswal16](https://github.com/kanakjaiswal16)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
