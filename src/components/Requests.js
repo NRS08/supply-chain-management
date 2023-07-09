@@ -63,10 +63,6 @@ export default function Requests() {
         const mapUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
         setmap(mapUrl);
 
-        // Do something with the latitude and longitude values
-        // console.log("Latitude: " + latitude);
-        // console.log("Longitude: " + longitude);
-
         const nominatimApiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
 
         fetch(nominatimApiUrl)
@@ -81,7 +77,7 @@ export default function Requests() {
           });
       });
     } else {
-      console.log("Geolocation is not supported by this browser.");
+      window.alert("Geolocation is not supported by this browser.");
     }
   }, []);
 
@@ -228,17 +224,17 @@ export default function Requests() {
           const generatedPdfContent = doc.output("arraybuffer");
           const hash = await generateHash(generatedPdfContent);
 
-          console.log(hash);
+          // console.log(hash);
 
           const data_product = await contract.IdTOProduct(p_id);
 
-          console.log(
-            data_product.productName,
-            Number(data_product.productQuantity)
-          );
+          // console.log(
+          //   data_product.productName,
+          //   Number(data_product.productQuantity)
+          // );
 
           iName = iName.toUpperCase();
-          console.log(iName);
+          // console.log(iName);
 
           if (
             data_product.productName === iName &&
@@ -265,15 +261,15 @@ export default function Requests() {
         } catch (error) {
           if (error.code === 4001) {
             // User rejected the transaction
-            console.log("Transaction rejected by the user");
+            window.alert("Transaction rejected by the user");
           } else if (error.code === -32002) {
             // Insufficient funds
-            console.log("Insufficient funds for the transaction");
+            window.alert("Insufficient funds for the transaction");
           } else if (error.message.includes("NotOwner")) {
             alert("This product doesn't belong to you");
           } else {
             // Handle other error conditions
-            console.log("Error while selling product:", error.message);
+            window.alert("Error while selling product:", error.message);
           }
         }
       } else {
@@ -298,7 +294,6 @@ export default function Requests() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      // console.log("hey");
       navigate("/login");
     } else {
       let u = url + "false";

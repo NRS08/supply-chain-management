@@ -32,11 +32,11 @@ const MyPDF = () => {
       const reader = new FileReader();
       reader.onload = () => {
         const actualPdfContent = reader.result;
-        console.log(typeof actualPdfContent);
-        console.log(actualPdfContent);
+        // console.log(typeof actualPdfContent);
+        // console.log(actualPdfContent);
 
         const actualPdfHash = sha256(actualPdfContent);
-        console.log(actualPdfHash);
+        // console.log(actualPdfHash);
         setpdf(actualPdfHash);
       };
       reader.readAsArrayBuffer(file);

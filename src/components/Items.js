@@ -54,7 +54,7 @@ export default function Items() {
     const val = document.querySelector(".searchBar").value;
     if (val) {
       var u = url + "&Iname=" + val;
-      console.log(u);
+      // console.log(u);
       getData(u);
     }
   };
